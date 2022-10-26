@@ -3,6 +3,6 @@ module com.example.nevidljivo_teme {
     requires javafx.fxml;
 
 
-    opens com.example.nevidljivo_teme to javafx.fxml;
-    exports com.example.nevidljivo_teme;
+    opens com.example.ppgr to javafx.fxml;
+    exports com.example.ppgr;
 }

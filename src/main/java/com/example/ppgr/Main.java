@@ -1,4 +1,4 @@
-package com.example.nevidljivo_teme;
+package com.example.ppgr;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +13,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        var fxmlSource = getClass().getResource("scene.fxml");
+        var fxmlSource = getClass().getResource("main_menu.fxml");
         if(fxmlSource == null)
         {
             System.err.println("INVALID FXML SOURCE FILE!");
@@ -22,9 +21,9 @@ public class Main extends Application {
         }
 
         Parent root = FXMLLoader.load(fxmlSource);
-        Scene scena = new Scene(root);
-        stage.setScene(scena);
-        stage.setTitle("Nevidljivo teme");
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("PPGR Project");
         stage.show();
     }
 }

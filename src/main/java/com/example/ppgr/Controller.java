@@ -1,4 +1,4 @@
-package com.example.nevidljivo_teme;
+package com.example.ppgr;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -72,7 +72,7 @@ public class Controller {
         }
 
         public Vektor afinize() {
-            return new Vektor(Math.round(x/z), Math.round(y/z), z/z);
+            return new Vektor(Math.round(x/z), Math.round(y/z), 1.0);
         }
     }
 
