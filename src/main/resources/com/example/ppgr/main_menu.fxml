@@ -11,9 +11,9 @@
 
 <AnchorPane fx:id="windowMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerMainMenu">
    <children>
-      <TextArea fx:id="taSceneDesc" layoutX="464.0" layoutY="517.0" prefHeight="172.0" prefWidth="696.0" />
+      <TextArea fx:id="taSceneDesc" layoutX="464.0" layoutY="549.0" prefHeight="140.0" prefWidth="696.0" />
       <TextField fx:id="tfSceneName" editable="false" layoutX="464.0" layoutY="22.0" prefHeight="24.0" prefWidth="696.0" />
-      <ImageView fx:id="ivScenePreview" fitHeight="449.0" fitWidth="696.0" layoutX="467.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="ivScenePreview" fitHeight="485.0" fitWidth="616.0" layoutX="504.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="btSelectTask" layoutX="707.0" layoutY="712.0" mnemonicParsing="false" onAction="#switchScene" prefHeight="64.0" prefWidth="217.0" text="SELECT">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -26,5 +26,7 @@
       </RadioButton>
       <RadioButton fx:id="rbSelect2" layoutX="35.0" layoutY="122.0" mnemonicParsing="false" onAction="#getInformation" text="2. Na" toggleGroup="$tgChooseScene" />
       <RadioButton fx:id="rbSelect3" layoutX="35.0" layoutY="183.0" mnemonicParsing="false" text="3" toggleGroup="$tgChooseScene" />
+      <Button fx:id="btImagePrev" disable="true" layoutX="449.0" layoutY="297.0" mnemonicParsing="false" onAction="#previousPreviewImage" prefHeight="111.0" prefWidth="122.0" styleClass="circlular-javafx-button" stylesheets="file:/home/vladimir/Desktop/PPGR/PPGR_Project/src/main/resources/stylesheets/button_next_previous.css" text="&lt;" visible="false" />
+      <Button fx:id="btImageNext" disable="true" layoutX="1145.0" layoutY="297.0" mnemonicParsing="false" onAction="#nextPreviewImage" prefHeight="111.0" prefWidth="122.0" styleClass="circlular-javafx-button" stylesheets="file:/home/vladimir/Desktop/PPGR/PPGR_Project/src/main/resources/stylesheets/button_next_previous.css" text="&gt;" visible="false" />
    </children>
 </AnchorPane>

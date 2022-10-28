@@ -7,9 +7,18 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
 
 public class ControllerMainMenu {
 
@@ -20,7 +29,9 @@ public class ControllerMainMenu {
 
     public TextArea taSceneDesc;
     public TextField tfSceneName;
-
+    public ImageView ivScenePreview;
+    public Button btImagePrev;
+    public Button btImageNext;
     public ToggleGroup tgChooseScene;
     public RadioButton rbSelect1;
     public RadioButton rbSelect2;
@@ -29,9 +40,11 @@ public class ControllerMainMenu {
     private Task task2;
 
     public void initialize() {
-        task1 = new Task("scene.fxml", "1. Nevidljivo teme", "Opis", "placeholder");
+        task1 = new Task("scene.fxml", "1. Nevidljivo teme", "Opis",
+                Arrays.asList("task1preview.jpg", "task1preview2.jpg"));
         rbSelect1.setUserData(task1);
-        task2 = new Task("test.fxml", "Test", "Test", "Test");
+        task2 = new Task("test.fxml", "Test", "Test",
+                Arrays.asList("test1.jpg", "test2.jpg"));
         rbSelect2.setUserData(task2);
     }
 
@@ -39,13 +52,15 @@ public class ControllerMainMenu {
         private String fxmlName;
         private String name;
         private String desc;
-        private String previewImage;
+        private List<String> previewImages;
+        private final ListIterator<String> iterator;
 
-        public Task(String fxmlName, String name, String desc, String previewImage) {
+        public Task(String fxmlName, String name, String desc, List<String> previewImages) {
             this.name = name;
             this.desc = desc;
-            this.previewImage = previewImage;
+            this.previewImages = previewImages;
             this.fxmlName = fxmlName;
+            this.iterator = previewImages.listIterator();
         }
 
         public void load(ActionEvent e) throws IOException {
@@ -61,26 +76,59 @@ public class ControllerMainMenu {
             stage.setScene(scene);
             stage.show();
         }
+
+        public String nextPreviewImage() {
+            btImagePrev.setDisable(false);
+            btImagePrev.setVisible(true);
+            if(iterator.hasNext()) {
+                String next = iterator.next();
+                if(!iterator.hasNext()){
+                    btImageNext.setDisable(true);
+                    btImageNext.setVisible(false);
+                }
+                return next;
+            }
+            return null;
+        }
+
+        public String previousPreviewImage() {
+            btImageNext.setDisable(false);
+            btImageNext.setVisible(true);
+            if(iterator.hasPrevious()) {
+                String prev = iterator.previous();
+                if(!iterator.hasPrevious()){
+                    btImagePrev.setDisable(true);
+                    btImagePrev.setVisible(false);
+                }
+                return prev;
+            }
+            return null;
+        }
     }
 
     public void getInformation(ActionEvent e) {
-        if(tgChooseScene.getSelectedToggle() == null) {
-            System.out.println("Please select a task");
-            return;
-        }
-        Task selectedTask = (Task) tgChooseScene.getSelectedToggle().getUserData();
-        if(selectedTask == null) {
-            System.out.println("Please select a valid task");
-            return;
-        }
+        Task selectedTask = getTask();
 
         taSceneDesc.setText(selectedTask.desc);
         tfSceneName.setText(selectedTask.name);
+
+        ivScenePreview.setImage(new Image(
+                (new File("src/main/resources/preview_images/" + selectedTask.previewImages.get(0)))
+                        .toURI().toString())
+        );
+
+        if (selectedTask.iterator.hasNext()) {
+            btImageNext.setDisable(false);
+            btImageNext.setVisible(true);
+        }
     }
 
     public void switchScene(ActionEvent e) throws IOException {
         if(tgChooseScene.getSelectedToggle() == null) {
-            System.out.println("Please select a task");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Please select a task");
+            alert.setContentText("A task from the list must be selected");
+            alert.show();
             return;
         }
         Task selectedTask = (Task) tgChooseScene.getSelectedToggle().getUserData();
@@ -89,5 +137,39 @@ public class ControllerMainMenu {
             return;
         }
         selectedTask.load(e);
+    }
+    
+    public void nextPreviewImage(ActionEvent e) {
+        Task selectedTask = getTask();
+        if(selectedTask == null || selectedTask.nextPreviewImage() == null)
+            return;
+
+        ivScenePreview.setImage(new Image(
+                (new File("src/main/resources/preview_images/" + selectedTask.nextPreviewImage()))
+                        .toURI().toString())
+        );
+    }
+
+    public void previousPreviewImage(ActionEvent e) {
+        Task selectedTask = getTask();
+        if(selectedTask == null || selectedTask.previousPreviewImage() == null)
+            return;
+        ivScenePreview.setImage(new Image(
+                (new File("src/main/resources/preview_images/" + selectedTask.previousPreviewImage()))
+                        .toURI().toString())
+        );
+    }
+
+    private Task getTask() {
+        if(tgChooseScene.getSelectedToggle() == null) {
+            System.out.println("GET::TASK::No tasks selected!");
+            return null;
+        }
+        Task selectedTask = (Task) tgChooseScene.getSelectedToggle().getUserData();
+        if(selectedTask == null) {
+            System.out.println("GET::TASK::Please select a valid task");
+            return null;
+        }
+        return selectedTask;
     }
 }
