@@ -39,15 +39,6 @@ public class ControllerMainMenu {
     private Task task1;
     private Task task2;
 
-    public void initialize() {
-        task1 = new Task("scene.fxml", "1. Nevidljivo teme", "Opis",
-                Arrays.asList("task1preview.jpg", "task1preview2.jpg"));
-        rbSelect1.setUserData(task1);
-        task2 = new Task("test.fxml", "Test", "Test",
-                Arrays.asList("test1.jpg", "test2.jpg"));
-        rbSelect2.setUserData(task2);
-    }
-
     private class Task {
         private String fxmlName;
         private String name;
@@ -61,6 +52,8 @@ public class ControllerMainMenu {
             this.previewImages = previewImages;
             this.fxmlName = fxmlName;
             this.iterator = previewImages.listIterator();
+            if(iterator.hasNext())
+                iterator.next();
         }
 
         public void load(ActionEvent e) throws IOException {
@@ -85,6 +78,7 @@ public class ControllerMainMenu {
                 if(!iterator.hasNext()){
                     btImageNext.setDisable(true);
                     btImageNext.setVisible(false);
+                    iterator.previous();
                 }
                 return next;
             }
@@ -99,11 +93,29 @@ public class ControllerMainMenu {
                 if(!iterator.hasPrevious()){
                     btImagePrev.setDisable(true);
                     btImagePrev.setVisible(false);
+                    iterator.next();
                 }
                 return prev;
             }
             return null;
         }
+
+        public boolean hasNextImage() {
+            return iterator.hasNext();
+        }
+
+        public boolean hasPreviousImage() {
+            return iterator.hasPrevious();
+        }
+    }
+
+    public void initialize() {
+        task1 = new Task("scene.fxml", "1. Nevidljivo teme", "Opis",
+                Arrays.asList("task1preview.jpg", "task1preview2.jpg"));
+        rbSelect1.setUserData(task1);
+        task2 = new Task("test.fxml", "Test", "Test",
+                Arrays.asList("test1.jpg", "test2.jpg"));
+        rbSelect2.setUserData(task2);
     }
 
     public void getInformation(ActionEvent e) {
@@ -117,7 +129,9 @@ public class ControllerMainMenu {
                         .toURI().toString())
         );
 
-        if (selectedTask.iterator.hasNext()) {
+        btImagePrev.setDisable(true);
+        btImagePrev.setVisible(false);
+        if (selectedTask.hasNextImage()) {
             btImageNext.setDisable(false);
             btImageNext.setVisible(true);
         }
@@ -141,21 +155,26 @@ public class ControllerMainMenu {
     
     public void nextPreviewImage(ActionEvent e) {
         Task selectedTask = getTask();
-        if(selectedTask == null || selectedTask.nextPreviewImage() == null)
+        if(selectedTask == null)
             return;
-
+        String nextImg = selectedTask.hasNextImage() ? selectedTask.nextPreviewImage() : null;
+        if(nextImg == null)
+            return;
         ivScenePreview.setImage(new Image(
-                (new File("src/main/resources/preview_images/" + selectedTask.nextPreviewImage()))
+                (new File("src/main/resources/preview_images/" + nextImg))
                         .toURI().toString())
         );
     }
 
     public void previousPreviewImage(ActionEvent e) {
         Task selectedTask = getTask();
-        if(selectedTask == null || selectedTask.previousPreviewImage() == null)
+        if(selectedTask == null)
+            return;
+        String prevImg = selectedTask.hasPreviousImage() ? selectedTask.previousPreviewImage() : null;
+        if(prevImg == null)
             return;
         ivScenePreview.setImage(new Image(
-                (new File("src/main/resources/preview_images/" + selectedTask.previousPreviewImage()))
+                (new File("src/main/resources/preview_images/" + prevImg))
                         .toURI().toString())
         );
     }
