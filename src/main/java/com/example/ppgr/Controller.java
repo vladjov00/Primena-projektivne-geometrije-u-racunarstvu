@@ -64,12 +64,18 @@ public class Controller {
         public String toString() {
             return "(" + x + ", " + y + ", " + z + ")";
         }
-        
+
         public Vektor cross(Vektor v2) {
             return new Vektor(this.y * v2.z - this.z * v2.y,
                     -this.x * v2.z + this.z * v2.x,
                     this.x * v2.y - this.y * v2.x);
         }
+
+        public Vektor add(Vektor v2) {
+            return new Vektor(this.x + v2.x, this.y + v2.y, this.z + v2.z);
+        }
+
+        public Vektor divideBy(double c) { return new Vektor(x/c, y/c, z/c); }
 
         public Vektor afinize() {
             return new Vektor(Math.round(x/z), Math.round(y/z), 1.0);
@@ -150,10 +156,25 @@ public class Controller {
         // ovde se vrsi izracunavanje polozaja tacke 4
         Vektor prava51 = tacke[0].cross(tacke[3]);
         Vektor prava62 = tacke[1].cross(tacke[4]);
-        Vektor tackaXb = prava51.cross(prava62);
+        Vektor prava73 = tacke[2].cross(tacke[5]);
+        Vektor tackaXb1 = prava51.cross(prava62);
+        Vektor tackaXb2 = prava62.cross(prava73);
+        Vektor tackaXb3 = prava51.cross(prava73);
+
+        // tacka Xb se racuna kao aritmeticka sredina dobijenih preseka
+        Vektor tackaXb = tackaXb1.add(tackaXb2).add(tackaXb3).divideBy(3.0);
+
         Vektor prava21 = tacke[0].cross(tacke[1]);
         Vektor prava78 = tacke[6].cross(tacke[5]);
-        Vektor tackaYb = prava21.cross(prava78);
+        Vektor prava65 = tacke[3].cross(tacke[4]);
+        Vektor tackaYb1 = prava21.cross(prava78);
+        Vektor tackaYb2 = prava65.cross(prava78);
+        Vektor tackaYb3 = prava21.cross(prava65);
+
+        // tacka Yb se racuna kao aritmeticka sredina dobijenih preseka
+        Vektor tackaYb = tackaYb1.add(tackaYb2).add(tackaYb3).divideBy(3.0);
+
+        // tacka 4 se racuna kao presek pravih Xb8 i Yb3
         Vektor pravaXb8 = tackaXb.cross(tacke[6]);
         Vektor pravaYb3 = tackaYb.cross(tacke[2]);
         Vektor tacka4 = pravaXb8.cross(pravaYb3).afinize();
