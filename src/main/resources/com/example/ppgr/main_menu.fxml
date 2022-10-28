@@ -19,14 +19,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <RadioButton fx:id="rbSelect1" layoutX="35.0" layoutY="65.0" mnemonicParsing="false" onAction="#getInformation" text="1. Nevidljiva Temena">
+      <RadioButton fx:id="rbSelect1" contentDisplay="RIGHT" layoutX="35.0" layoutY="65.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="26.0" prefWidth="286.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 1: INVISIBLE POINT">
          <toggleGroup>
             <ToggleGroup fx:id="tgChooseScene" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="rbSelect2" layoutX="35.0" layoutY="122.0" mnemonicParsing="false" onAction="#getInformation" text="2. Na" toggleGroup="$tgChooseScene" />
-      <RadioButton fx:id="rbSelect3" layoutX="35.0" layoutY="183.0" mnemonicParsing="false" text="3" toggleGroup="$tgChooseScene" />
-      <Button fx:id="btImagePrev" disable="true" layoutX="449.0" layoutY="297.0" mnemonicParsing="false" onAction="#previousPreviewImage" prefHeight="111.0" prefWidth="122.0" styleClass="circlular-javafx-button" stylesheets="file:/home/vladimir/Desktop/PPGR/PPGR_Project/src/main/resources/stylesheets/button_next_previous.css" text="&lt;" visible="false" />
-      <Button fx:id="btImageNext" disable="true" layoutX="1145.0" layoutY="297.0" mnemonicParsing="false" onAction="#nextPreviewImage" prefHeight="111.0" prefWidth="122.0" styleClass="circlular-javafx-button" stylesheets="file:/home/vladimir/Desktop/PPGR/PPGR_Project/src/main/resources/stylesheets/button_next_previous.css" text="&gt;" visible="false" />
+      <RadioButton fx:id="rbSelect2" layoutX="35.0" layoutY="122.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="18.0" prefWidth="286.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 2: N/A" toggleGroup="$tgChooseScene" />
+      <Button fx:id="btImagePrev" disable="true" layoutX="449.0" layoutY="297.0" mnemonicParsing="false" onAction="#previousPreviewImage" prefHeight="111.0" prefWidth="122.0" styleClass="circlular-javafx-button" stylesheets="@../../../stylesheets/main_menu.css" text="&lt;" visible="false" />
+      <Button fx:id="btImageNext" disable="true" layoutX="1145.0" layoutY="297.0" mnemonicParsing="false" onAction="#nextPreviewImage" prefHeight="111.0" prefWidth="122.0" styleClass="circlular-javafx-button" stylesheets="@../../../stylesheets/main_menu.css" text="&gt;" visible="false" />
+      <RadioButton fx:id="rbSelect21" layoutX="35.0" layoutY="188.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="18.0" prefWidth="286.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 3: N/A" toggleGroup="$tgChooseScene" />
    </children>
 </AnchorPane>

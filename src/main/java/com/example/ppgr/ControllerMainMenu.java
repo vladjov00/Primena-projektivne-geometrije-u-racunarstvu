@@ -1,7 +1,6 @@
 package com.example.ppgr;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -9,23 +8,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
 public class ControllerMainMenu {
-
-    @FXML
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
 
     public TextArea taSceneDesc;
     public TextField tfSceneName;
@@ -36,14 +27,11 @@ public class ControllerMainMenu {
     public RadioButton rbSelect1;
     public RadioButton rbSelect2;
 
-    private Task task1;
-    private Task task2;
-
     private class Task {
-        private String fxmlName;
-        private String name;
-        private String desc;
-        private List<String> previewImages;
+        private final String fxmlName;
+        private final String name;
+        private final String desc;
+        private final List<String> previewImages;
         private final ListIterator<String> iterator;
 
         public Task(String fxmlName, String name, String desc, List<String> previewImages) {
@@ -63,9 +51,9 @@ public class ControllerMainMenu {
                 System.err.println("INVALID FXML SOURCE FILE!");
                 return;
             }
-            root = FXMLLoader.load(fxmlSource);
-            stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-            scene = new Scene(root);
+            Parent root = FXMLLoader.load(fxmlSource);
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         }
@@ -110,16 +98,21 @@ public class ControllerMainMenu {
     }
 
     public void initialize() {
-        task1 = new Task("scene.fxml", "1. Nevidljivo teme", "Opis",
-                Arrays.asList("task1preview.jpg", "task1preview2.jpg"));
-        rbSelect1.setUserData(task1);
-        task2 = new Task("test.fxml", "Test", "Test",
-                Arrays.asList("test1.jpg", "test2.jpg"));
-        rbSelect2.setUserData(task2);
+        rbSelect1.setUserData(new Task("scene.fxml", "1. Nevidljivo teme", "Opis",
+                Arrays.asList("task1preview.jpg", "task1preview2.jpg")));
+        rbSelect2.setUserData(new Task("test.fxml", "Test", "Test",
+                Arrays.asList("test1.jpg", "test2.jpg")));
     }
 
     public void getInformation(ActionEvent e) {
         Task selectedTask = getTask();
+        if (selectedTask == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("INVALID TASK: task does not exist");
+            alert.show();
+            return;
+        }
 
         taSceneDesc.setText(selectedTask.desc);
         tfSceneName.setText(selectedTask.name);
@@ -160,6 +153,7 @@ public class ControllerMainMenu {
         String nextImg = selectedTask.hasNextImage() ? selectedTask.nextPreviewImage() : null;
         if(nextImg == null)
             return;
+
         ivScenePreview.setImage(new Image(
                 (new File("src/main/resources/preview_images/" + nextImg))
                         .toURI().toString())
