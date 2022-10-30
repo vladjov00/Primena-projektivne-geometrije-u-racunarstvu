@@ -1,0 +1,5 @@
+[SR]~
+Potrebno je izračunati koordinate nevidljive tačke P4 kvadra čija su temena oblika Pi(x, y).
+
+[EN]~
+english

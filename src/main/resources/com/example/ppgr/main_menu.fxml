@@ -11,7 +11,7 @@
 
 <AnchorPane fx:id="windowMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerMainMenu">
    <children>
-      <TextArea fx:id="taSceneDesc" layoutX="464.0" layoutY="549.0" prefHeight="140.0" prefWidth="696.0" />
+      <TextArea fx:id="taSceneDesc" editable="false" layoutX="464.0" layoutY="549.0" prefHeight="140.0" prefWidth="696.0" />
       <TextField fx:id="tfSceneName" editable="false" layoutX="464.0" layoutY="22.0" prefHeight="24.0" prefWidth="696.0" />
       <ImageView fx:id="ivScenePreview" fitHeight="485.0" fitWidth="616.0" layoutX="504.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="btSelectTask" layoutX="707.0" layoutY="712.0" mnemonicParsing="false" onAction="#switchScene" prefHeight="64.0" prefWidth="217.0" text="SELECT">
@@ -19,14 +19,16 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <RadioButton fx:id="rbSelect1" contentDisplay="RIGHT" layoutX="35.0" layoutY="65.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="26.0" prefWidth="286.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 1: INVISIBLE POINT">
+      <RadioButton fx:id="rbSelect1" layoutX="35.0" layoutY="60.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="60.0" prefWidth="300.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 1: INVISIBLE POINT">
          <toggleGroup>
             <ToggleGroup fx:id="tgChooseScene" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="rbSelect2" layoutX="35.0" layoutY="122.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="18.0" prefWidth="286.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 2: N/A" toggleGroup="$tgChooseScene" />
+      <RadioButton fx:id="rbSelect2" layoutX="35.0" layoutY="200.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="60.0" prefWidth="300.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 2: N/A" toggleGroup="$tgChooseScene" />
       <Button fx:id="btImagePrev" disable="true" layoutX="449.0" layoutY="297.0" mnemonicParsing="false" onAction="#previousPreviewImage" prefHeight="111.0" prefWidth="122.0" styleClass="circlular-javafx-button" stylesheets="@../../../stylesheets/main_menu.css" text="&lt;" visible="false" />
       <Button fx:id="btImageNext" disable="true" layoutX="1145.0" layoutY="297.0" mnemonicParsing="false" onAction="#nextPreviewImage" prefHeight="111.0" prefWidth="122.0" styleClass="circlular-javafx-button" stylesheets="@../../../stylesheets/main_menu.css" text="&gt;" visible="false" />
-      <RadioButton fx:id="rbSelect21" layoutX="35.0" layoutY="188.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="18.0" prefWidth="286.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 3: N/A" toggleGroup="$tgChooseScene" />
+      <RadioButton fx:id="rbSelect3" layoutX="35.0" layoutY="340.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="60.0" prefWidth="300.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 3: N/A" toggleGroup="$tgChooseScene" />
+      <RadioButton fx:id="rbSelect4" layoutX="35.0" layoutY="500.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="60.0" prefWidth="300.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 4: N/A" toggleGroup="$tgChooseScene" />
+      <RadioButton fx:id="rbSelect5" layoutX="35.0" layoutY="640.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="60.0" prefWidth="300.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 5: N/A" toggleGroup="$tgChooseScene" />
    </children>
 </AnchorPane>

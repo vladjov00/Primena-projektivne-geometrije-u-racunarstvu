@@ -11,10 +11,14 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Scanner;
 
 public class ControllerMainMenu {
 
@@ -30,13 +34,13 @@ public class ControllerMainMenu {
     private class Task {
         private final String fxmlName;
         private final String name;
-        private final String desc;
+        private final String descFile;
         private final List<String> previewImages;
         private final ListIterator<String> iterator;
 
-        public Task(String fxmlName, String name, String desc, List<String> previewImages) {
+        public Task(String fxmlName, String name, String descFile, List<String> previewImages) {
             this.name = name;
-            this.desc = desc;
+            this.descFile = descFile;
             this.previewImages = previewImages;
             this.fxmlName = fxmlName;
             this.iterator = previewImages.listIterator();
@@ -98,10 +102,14 @@ public class ControllerMainMenu {
     }
 
     public void initialize() {
-        rbSelect1.setUserData(new Task("scene.fxml", "1. Nevidljivo teme", "Opis",
+        rbSelect1.setUserData(new Task("scene1.fxml", "1. Nevidljivo teme", "task1.txt",
                 Arrays.asList("task1preview.jpg", "task1preview2.jpg")));
-        rbSelect2.setUserData(new Task("test.fxml", "Test", "Test",
-                Arrays.asList("test1.jpg", "test2.jpg")));
+    }
+
+    public static String readFileAsString(String fileName) throws IOException {
+        String data;
+        data = new String(Files.readAllBytes(Paths.get(fileName)));
+        return data;
     }
 
     public void getInformation(ActionEvent e) {
@@ -114,7 +122,17 @@ public class ControllerMainMenu {
             return;
         }
 
-        taSceneDesc.setText(selectedTask.desc);
+        String desc, descSR, descEN;
+        try {
+            desc = readFileAsString("src/main/resources/task_descriptions/" + selectedTask.descFile);
+            descSR = desc.substring(desc.indexOf('~') + 2);
+            descEN = desc.substring(desc.lastIndexOf('~') + 2);
+        } catch (IOException ex) {
+            System.err.println("ERROR::FATAL::FILE (" + selectedTask.descFile + ") NOT FOUND");
+            throw new RuntimeException(ex);
+        }
+
+        taSceneDesc.setText(desc);
         tfSceneName.setText(selectedTask.name);
 
         ivScenePreview.setImage(new Image(
