@@ -1,4 +1,4 @@
-package com.example.nevidljivo_teme;
+package com.example.ppgr;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.Scanner;
 
 
-public class Controller {
+public class ControllerTask1 {
     @FXML
 
     private Boolean imageChosen;
@@ -43,37 +43,6 @@ public class Controller {
         textFields[5] = textField6;
         textFields[6] = textField7;
         imageChosen = false;
-    }
-
-    private class Vektor {
-        private double x, y, z;
-
-        public Vektor(double x, double y) {
-            this.x = x;
-            this.y = y;
-            this.z = 1;
-        }
-
-        public Vektor(double x, double y, double z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        @Override
-        public String toString() {
-            return "(" + x + ", " + y + ", " + z + ")";
-        }
-        
-        public Vektor cross(Vektor v2) {
-            return new Vektor(this.y * v2.z - this.z * v2.y,
-                    -this.x * v2.z + this.z * v2.x,
-                    this.x * v2.y - this.y * v2.x);
-        }
-
-        public Vektor afinize() {
-            return new Vektor(Math.round(x/z), Math.round(y/z), z/z);
-        }
     }
 
     public void chooseImage(ActionEvent e) {
@@ -132,7 +101,7 @@ public class Controller {
         }
         lblClick7.setVisible(false);
 
-        Vektor[] tacke = new Vektor[7];
+        Vector[] tacke = new Vector[7];
 
         for (int i = 0; i < 7; i++) {
             String str = textFields[i].getText();
@@ -142,25 +111,40 @@ public class Controller {
             sc.next(); sc.next();
             double y = sc.nextDouble();
 
-            tacke[i] = new Vektor(x, y);
+            tacke[i] = new Vector(x, y);
 
             sc.close();
         }
 
         // ovde se vrsi izracunavanje polozaja tacke 4
-        Vektor prava51 = tacke[0].cross(tacke[3]);
-        Vektor prava62 = tacke[1].cross(tacke[4]);
-        Vektor tackaXb = prava51.cross(prava62);
-        Vektor prava21 = tacke[0].cross(tacke[1]);
-        Vektor prava78 = tacke[6].cross(tacke[5]);
-        Vektor tackaYb = prava21.cross(prava78);
-        Vektor pravaXb8 = tackaXb.cross(tacke[6]);
-        Vektor pravaYb3 = tackaYb.cross(tacke[2]);
-        Vektor tacka4 = pravaXb8.cross(pravaYb3).afinize();
+        Vector prava51 = tacke[0].cross(tacke[3]);
+        Vector prava62 = tacke[1].cross(tacke[4]);
+        Vector prava73 = tacke[2].cross(tacke[5]);
+        Vector tackaXb1 = prava51.cross(prava62);
+        Vector tackaXb2 = prava62.cross(prava73);
+        Vector tackaXb3 = prava51.cross(prava73);
 
-        addPoint(tacka4.x, tacka4.y, Color.RED);
+        // tacka Xb se racuna kao aritmeticka sredina dobijenih preseka
+        Vector tackaXb = tackaXb1.add(tackaXb2).add(tackaXb3).divideBy(3.0);
 
-        tfResult.setText("x: " + tacka4.x + " ; y: " + tacka4.y);
+        Vector prava21 = tacke[0].cross(tacke[1]);
+        Vector prava78 = tacke[6].cross(tacke[5]);
+        Vector prava65 = tacke[3].cross(tacke[4]);
+        Vector tackaYb1 = prava21.cross(prava78);
+        Vector tackaYb2 = prava65.cross(prava78);
+        Vector tackaYb3 = prava21.cross(prava65);
+
+        // tacka Yb se racuna kao aritmeticka sredina dobijenih preseka
+        Vector tackaYb = tackaYb1.add(tackaYb2).add(tackaYb3).divideBy(3.0);
+
+        // tacka 4 se racuna kao presek pravih Xb8 i Yb3
+        Vector pravaXb8 = tackaXb.cross(tacke[6]);
+        Vector pravaYb3 = tackaYb.cross(tacke[2]);
+        Vector tacka4 = pravaXb8.cross(pravaYb3).affinize();
+
+        addPoint(tacka4.getX(), tacka4.getY(), Color.RED);
+
+        tfResult.setText("x: " + tacka4.getX() + " ; y: " + tacka4.getY());
     }
 }
 

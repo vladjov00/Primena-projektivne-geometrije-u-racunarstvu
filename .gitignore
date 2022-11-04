@@ -11,6 +11,8 @@ target/
 *.iws
 *.iml
 *.ipr
+src/main/java/com/example/ppgr/SwitchButton.java
+src/main/java/com/example/ppgr/ToggleSwitch.java
 
 ### Eclipse ###
 .apt_generated
