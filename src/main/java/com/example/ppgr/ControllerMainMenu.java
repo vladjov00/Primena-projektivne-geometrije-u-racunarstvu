@@ -1,24 +1,14 @@
 package com.example.ppgr;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Scanner;
 
 public class ControllerMainMenu {
 
@@ -30,76 +20,6 @@ public class ControllerMainMenu {
     public ToggleGroup tgChooseScene;
     public RadioButton rbSelect1;
     public RadioButton rbSelect2;
-
-    private class Task {
-        private final String fxmlName;
-        private final String name;
-        private final String descFile;
-        private final List<String> previewImages;
-        private final ListIterator<String> iterator;
-
-        public Task(String fxmlName, String name, String descFile, List<String> previewImages) {
-            this.name = name;
-            this.descFile = descFile;
-            this.previewImages = previewImages;
-            this.fxmlName = fxmlName;
-            this.iterator = previewImages.listIterator();
-            if(iterator.hasNext())
-                iterator.next();
-        }
-
-        public void load(ActionEvent e) throws IOException {
-            var fxmlSource = getClass().getResource(fxmlName);
-            if(fxmlSource == null)
-            {
-                System.err.println("INVALID FXML SOURCE FILE!");
-                return;
-            }
-            Parent root = FXMLLoader.load(fxmlSource);
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
-
-        public String nextPreviewImage() {
-            btImagePrev.setDisable(false);
-            btImagePrev.setVisible(true);
-            if(iterator.hasNext()) {
-                String next = iterator.next();
-                if(!iterator.hasNext()){
-                    btImageNext.setDisable(true);
-                    btImageNext.setVisible(false);
-                    iterator.previous();
-                }
-                return next;
-            }
-            return null;
-        }
-
-        public String previousPreviewImage() {
-            btImageNext.setDisable(false);
-            btImageNext.setVisible(true);
-            if(iterator.hasPrevious()) {
-                String prev = iterator.previous();
-                if(!iterator.hasPrevious()){
-                    btImagePrev.setDisable(true);
-                    btImagePrev.setVisible(false);
-                    iterator.next();
-                }
-                return prev;
-            }
-            return null;
-        }
-
-        public boolean hasNextImage() {
-            return iterator.hasNext();
-        }
-
-        public boolean hasPreviousImage() {
-            return iterator.hasPrevious();
-        }
-    }
 
     public void initialize() {
         rbSelect1.setUserData(new Task("scene1.fxml", "1. Nevidljivo teme", "task1.txt",
@@ -128,8 +48,7 @@ public class ControllerMainMenu {
             descSR = desc.substring(desc.indexOf('~') + 2);
             descEN = desc.substring(desc.lastIndexOf('~') + 2);
         } catch (IOException ex) {
-            System.err.println("ERROR::FATAL::FILE (" + selectedTask.descFile + ") NOT FOUND");
-            throw new RuntimeException(ex);
+            desc = "ERROR::TASK_DESC_FILE (" + selectedTask.descFile + ") NOT FOUND";
         }
 
         taSceneDesc.setText(desc);
@@ -166,11 +85,19 @@ public class ControllerMainMenu {
     
     public void nextPreviewImage(ActionEvent e) {
         Task selectedTask = getTask();
-        if(selectedTask == null)
+        if(selectedTask == null || !selectedTask.hasNextImage())
             return;
-        String nextImg = selectedTask.hasNextImage() ? selectedTask.nextPreviewImage() : null;
-        if(nextImg == null)
-            return;
+
+        btImagePrev.setDisable(false);
+        btImagePrev.setVisible(true);
+        String nextImg = selectedTask.nextPreviewImage();
+
+        if(!selectedTask.hasNextImage()){
+            btImageNext.setDisable(true);
+            btImageNext.setVisible(false);
+            selectedTask.previousPreviewImage();
+        }
+
         ivScenePreview.setImage(new Image(
                 (new File("src/main/resources/preview_images/" + nextImg))
                         .toURI().toString())
@@ -179,11 +106,19 @@ public class ControllerMainMenu {
 
     public void previousPreviewImage(ActionEvent e) {
         Task selectedTask = getTask();
-        if(selectedTask == null)
+        if(selectedTask == null || !selectedTask.hasPreviousImage())
             return;
-        String prevImg = selectedTask.hasPreviousImage() ? selectedTask.previousPreviewImage() : null;
-        if(prevImg == null)
-            return;
+
+        btImageNext.setDisable(false);
+        btImageNext.setVisible(true);
+        String prevImg = selectedTask.previousPreviewImage();
+
+        if(!selectedTask.hasPreviousImage()){
+            btImagePrev.setDisable(true);
+            btImagePrev.setVisible(false);
+            selectedTask.nextPreviewImage();
+        }
+
         ivScenePreview.setImage(new Image(
                 (new File("src/main/resources/preview_images/" + prevImg))
                         .toURI().toString())

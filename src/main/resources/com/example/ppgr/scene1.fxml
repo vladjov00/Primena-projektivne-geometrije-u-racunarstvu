@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="box" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.Controller">
+<AnchorPane fx:id="box" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerTask1">
    <children>
       <Button layoutX="22.0" layoutY="24.0" mnemonicParsing="false" onAction="#chooseImage" prefHeight="37.0" prefWidth="183.0" text="Choose Image" />
       <ImageView fx:id="imageView" fitHeight="650.0" fitWidth="940.0" layoutX="22.0" layoutY="83.0" onMouseClicked="#clickOnImage" pickOnBounds="true" preserveRatio="true">
