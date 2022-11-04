@@ -1,5 +1,16 @@
 [SR]~
-Potrebno je izračunati koordinate nevidljive tačke P4 kvadra čija su temena oblika Pi(x, y).
+Potrebno je izračunati koordinate nevidljive tačke P4 kvadra čija su temena oblika Pi(x, y),
+na osnovu koordinata sedam vidljivih temena tog kvadra.
+
+Koristeći koordinate vidljivih temena, možemo pronaći jednačine pravih koje prolaze kroz
+paralelne ivice kvadra. Te ivice će se seći u tačkama X, Y i Z, koje mogu biti konačne ili
+beskonačne. Ako je X presek prave koja prolazi kroz temena 1 i 2 i prave koja prolazi kroz
+temena 6 i 5, a Y presek prave koja prolazi kroz temena 6 i 2 i prave koja prolazi kroz
+temena 5 i 1, tada se tačka 4 dobija kao presek prave koja prolazi kroz tačku X i teme 3 i
+prave koja prolazi kroz tačku Y i teme 8.
+
+UPUTSTVO: Klikom na odabranu sliku se beleže koordinate tačke. Kada je odabrano 7 tačaka,
+pritiskom na dugme COMPUTE se izračunavaju koordinate nevidljive tačke i obeležava se na slici.
 
 [EN]~
 english

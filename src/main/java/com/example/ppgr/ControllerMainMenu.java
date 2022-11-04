@@ -171,7 +171,6 @@ public class ControllerMainMenu {
         String nextImg = selectedTask.hasNextImage() ? selectedTask.nextPreviewImage() : null;
         if(nextImg == null)
             return;
-
         ivScenePreview.setImage(new Image(
                 (new File("src/main/resources/preview_images/" + nextImg))
                         .toURI().toString())
