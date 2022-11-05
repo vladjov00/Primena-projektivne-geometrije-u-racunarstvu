@@ -24,6 +24,9 @@ public class ControllerMainMenu {
     public void initialize() {
         rbSelect1.setUserData(new Task("scene1.fxml", "1. Nevidljivo teme", "task1.txt",
                 Arrays.asList("task1preview.jpg", "task1preview2.jpg")));
+
+        rbSelect2.setUserData(new Task("scene2.fxml", "2. task2", "task1.txt",
+                Arrays.asList("task1preview.jpg")));
     }
 
     public static String readFileAsString(String fileName) throws IOException {

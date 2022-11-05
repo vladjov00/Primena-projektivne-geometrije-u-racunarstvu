@@ -15,11 +15,12 @@ import java.io.File;
 import java.util.Scanner;
 
 
-public class ControllerTask1 {
+public class ControllerTask1 extends ButtonAction {
     @FXML
 
     private Boolean imageChosen;
     private int tfCounter = 0;
+
     public ImageView imageView;
     public TextField textField1;
     public TextField textField2;
@@ -32,6 +33,7 @@ public class ControllerTask1 {
     public TextField tfResult;
     public Label lblClick7;
     public AnchorPane box;
+
     private final TextField[] textFields = new TextField[7];
 
     public void initialize() {
@@ -45,18 +47,9 @@ public class ControllerTask1 {
         imageChosen = false;
     }
 
-    public void chooseImage(ActionEvent e) {
-        FileChooser fc = new FileChooser();
-        fc.setTitle("Open Image");
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg"));
-
-        File selectedFile = fc.showOpenDialog(null);
-
-        Image img = new Image(selectedFile.toURI().toString());
-        imageView.setImage(img);
+    public void chooseImageButtonPressed() {
+        chooseImage(imageView, tfImage);
         imageChosen = true;
-
-        tfImage.setText(selectedFile.toURI().toString());
     }
 
     private void addPoint(double x, double y, Color color){

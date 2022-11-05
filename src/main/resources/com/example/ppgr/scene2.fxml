@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1232.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerTask2">
+   <children>
+      <Button fx:id="btChooseImage1" focusTraversable="false" layoutX="20.0" layoutY="400.0" mnemonicParsing="false" onAction="#chooseImage1ButtonPressed" text="Choose Image" />
+      <ImageView fx:id="ivImage1" fitHeight="250.0" fitWidth="400.0" layoutX="20.0" layoutY="437.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="btChooseImage2" focusTraversable="false" layoutX="500.0" layoutY="401.0" mnemonicParsing="false" onAction="#chooseImage2ButtonPressed" text="Choose Image" />
+      <ImageView fx:id="ivImage2" fitHeight="250.0" fitWidth="400.0" layoutX="500.0" layoutY="437.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="tfImage1" editable="false" focusTraversable="false" layoutX="160.0" layoutY="400.0" prefHeight="25.0" prefWidth="300.0" />
+      <TextField fx:id="tfImage2" editable="false" focusTraversable="false" layoutX="639.0" layoutY="400.0" prefHeight="25.0" prefWidth="300.0" />
+      <ImageView fx:id="ivCoordinateSystem1" fitHeight="345.0" fitWidth="356.0" layoutX="26.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../preview_images/coordinate_system.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivCoordinateSystem2" fitHeight="345.0" fitWidth="356.0" layoutX="528.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../preview_images/coordinate_system.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="btClear1" focusTraversable="false" layoutX="371.0" layoutY="14.0" mnemonicParsing="false" onAction="#clearCoords" text="Clear" />
+      <Button fx:id="btClear2" focusTraversable="false" layoutX="873.0" layoutY="14.0" mnemonicParsing="false" onAction="#clearCoords" text="Clear" />
+      <AnchorPane fx:id="apCoords1" layoutX="26.0" layoutY="14.0" onMouseClicked="#clickOnCoordinateSystem" prefHeight="345.0" prefWidth="345.0" />
+      <AnchorPane fx:id="apCoords2" layoutX="528.0" layoutY="14.0" onMouseClicked="#clickOnCoordinateSystem" prefHeight="345.0" prefWidth="345.0" />
+      <TextArea fx:id="taInfo" editable="false" focusTraversable="false" layoutX="939.0" layoutY="14.0" prefHeight="176.0" prefWidth="287.0" promptText="Click to select 4 points on each grid" />
+      <Button fx:id="btCompute" layoutX="938.0" layoutY="207.0" mnemonicParsing="false" onAction="#computeTransformationMatrix" prefHeight="24.0" prefWidth="287.0" text="Compute Transformation Matrix" />
+      <TextArea fx:id="taResult" editable="false" layoutX="938.0" layoutY="248.0" prefHeight="108.0" prefWidth="287.0" promptText="RESULT" />
+   </children>
+</AnchorPane>
