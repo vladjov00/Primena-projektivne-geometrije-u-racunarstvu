@@ -22,12 +22,6 @@ public class Vector {
         return "(" + x + ", " + y + ", " + z + ")";
     }
 
-    public Vector cross(Vector v2) {
-        return new Vector(this.y * v2.z - this.z * v2.y,
-                -this.x * v2.z + this.z * v2.x,
-                this.x * v2.y - this.y * v2.x);
-    }
-
     public double getX() {
         return x;
     }
@@ -40,8 +34,18 @@ public class Vector {
         return z;
     }
 
+    public Vector cross(Vector v2) {
+        return new Vector(this.y * v2.z - this.z * v2.y,
+                -this.x * v2.z + this.z * v2.x,
+                this.x * v2.y - this.y * v2.x);
+    }
+
+    public double scalar(Vector v2) {
+        return x * v2.getX() + y * v2.getY() + z * v2.getZ();
+    }
+
     public Vector add(Vector v2) {
-        return new Vector(this.x + v2.x, this.y + v2.y, this.z + v2.z);
+        return new Vector(this.x + v2.getX(), this.y + v2.getY(), this.z + v2.getZ());
     }
 
     public Vector divideBy(double c) { return new Vector(x / c, y / c, z / c); }
@@ -49,4 +53,6 @@ public class Vector {
     public Vector affinize() {
         return new Vector(Math.round(x / z), Math.round(y / z), 1.0);
     }
+
+    public Vector multiplyBy(double scalar) { return new Vector(x*scalar, y*scalar, z*scalar); }
 }

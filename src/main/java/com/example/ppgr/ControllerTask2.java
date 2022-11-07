@@ -2,6 +2,7 @@ package com.example.ppgr;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -26,7 +27,6 @@ public class ControllerTask2  extends ButtonAction{
     private int[] counters;
     private boolean image1Chosen;
     private boolean image2Chosen;
-
 
     private static class AnchorPaneData {
         private final int counterId;
@@ -166,7 +166,26 @@ public class ControllerTask2  extends ButtonAction{
         }
     }
 
-    public void computeTransformationMatrix(ActionEvent e) {
+    private double[] solve3x3(Vector[] vectors) {
+        double eps = 1e-5;
+
+        double Dx = Matrix.determinant3x3(new Matrix.Matrix3x3(vectors[3], vectors[1], vectors[2]));
+        double Dy = Matrix.determinant3x3(new Matrix.Matrix3x3(vectors[0], vectors[3], vectors[2]));
+        double Dz = Matrix.determinant3x3(new Matrix.Matrix3x3(vectors[0], vectors[1], vectors[3]));
+        double D = Matrix.determinant3x3(new Matrix.Matrix3x3(vectors[0], vectors[1], vectors[2]));
+
+        if(Math.abs(Dx) < eps || Math.abs(Dy) < eps || Math.abs(Dz) < eps || Math.abs(D) < eps) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Kolinearni vektori");
+            alert.setContentText("Tacke moraju biti u opstem polozaju!");
+            alert.show();
+            return null;
+        }
+
+        return new double[]{Dx/D, Dy/D, Dz/D};
+    }
+
+    public void computeTransformationMatrixNaive(ActionEvent e) {
         if(counters[0] != 4 || counters[1] != 4)
             return;
 
@@ -181,7 +200,46 @@ public class ControllerTask2  extends ButtonAction{
             vectorsAfter[i] = new Vector(Double.parseDouble(points2[i*2].getText()), Double.parseDouble(points2[i*2+1].getText()));
         }
 
-        // TODO
+        double[] vP1 = solve3x3(vectorsBefore);
+        if(vP1 == null) {
+            System.out.println("ERROR: Collinear vectors");
+            return;
+        }
+
+        Matrix.Matrix3x3 P1 = new Matrix.Matrix3x3(vectorsBefore[0].multiplyBy(vP1[0]), vectorsBefore[1].multiplyBy(vP1[1]), vectorsBefore[2].multiplyBy(vP1[2]));
+
+        double[] vP2 = solve3x3(vectorsAfter);
+        if(vP2 == null) {
+            System.out.println("ERROR: Collinear vectors");
+            return;
+        }
+
+        Matrix.Matrix3x3 P2 = new Matrix.Matrix3x3(vectorsAfter[0].multiplyBy(vP2[0]), vectorsAfter[1].multiplyBy(vP2[1]), vectorsAfter[2].multiplyBy(vP2[2]));
+
+        Matrix.Matrix3x3 P;
+        try {
+            P = Matrix.multiply(P2, Matrix.inverse(P1));
+        } catch (Exception ex) {
+            System.err.println("EXCEPTION");
+            return;
+        }
+
+        taResult.setText(P.toString());
+
+//        Vector A = new Vector(1,2,3);
+//        Vector B = new Vector(3,2,1);
+//        Vector C = new Vector(0,1,1);
+//        Vector D = new Vector(7,11,10);
+//        Vector A = new Vector(5,10,15);
+//        Vector B = new Vector(15,10,5);
+//        Vector C = new Vector(0,5,5);
+//        Vector D = new Vector(35,55,50);
+//        double[] r = solve3x3(new Vector[]{A, B, C, D});
+//
+//        System.out.println("lambda1: " + r[0] + " lambda2: " + r[1] + " lambda3: " + r[2]);
+//        Matrix.Matrix3x3 m = new Matrix.Matrix3x3(A.multiplyBy(r[0]), B.multiplyBy(r[1]), C.multiplyBy(r[2]));
+//        System.out.println(m.reduce());
+
     }
 
 }
