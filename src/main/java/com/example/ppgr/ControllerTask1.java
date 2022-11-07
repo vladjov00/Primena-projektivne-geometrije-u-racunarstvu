@@ -48,8 +48,9 @@ public class ControllerTask1 extends ButtonAction {
     }
 
     public void chooseImageButtonPressed() {
-        chooseImage(imageView, tfImage);
-        imageChosen = true;
+        File selectedFile = chooseImage(imageView, tfImage);
+        if(selectedFile != null)
+            imageChosen = true;
     }
 
     private void addPoint(double x, double y, Color color){
@@ -140,5 +141,3 @@ public class ControllerTask1 extends ButtonAction {
         tfResult.setText("x: " + tacka4.getX() + " ; y: " + tacka4.getY());
     }
 }
-
-

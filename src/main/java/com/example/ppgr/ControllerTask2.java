@@ -64,10 +64,10 @@ public class ControllerTask2  extends ButtonAction{
 
     public void initialize() {
         Arrow arrow1 = new Arrow(400, 200, 500, 200, 15);
-        Arrow arrow2 = new Arrow(1068, 26, 1090, 26, 5);
-        Arrow arrow3 = new Arrow(1068, 76, 1090, 76, 5);
-        Arrow arrow4 = new Arrow(1068, 126, 1090, 126, 5);
-        Arrow arrow5 = new Arrow(1068, 176, 1090, 176, 5);
+        Arrow arrow2 = new Arrow(1150, 26, 1200, 26, 5);
+        Arrow arrow3 = new Arrow(1150, 76, 1200, 76, 5);
+        Arrow arrow4 = new Arrow(1150, 126, 1200, 126, 5);
+        Arrow arrow5 = new Arrow(1150, 176, 1200, 176, 5);
         window.getChildren().addAll(arrow1, arrow2, arrow3, arrow4, arrow5);
         counters = new int[4];
         TextField[] tfArray1 = {tfAx, tfAy, tfBx, tfBy, tfCx, tfCy, tfDx, tfDy};

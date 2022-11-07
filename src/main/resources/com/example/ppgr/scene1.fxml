@@ -9,30 +9,30 @@
 
 <AnchorPane fx:id="box" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerTask1">
    <children>
-      <Button layoutX="22.0" layoutY="24.0" mnemonicParsing="false" onAction="#chooseImageButtonPressed" prefHeight="37.0" prefWidth="183.0" text="Choose Image" />
+      <Button focusTraversable="false" layoutX="22.0" layoutY="24.0" mnemonicParsing="false" onAction="#chooseImageButtonPressed" prefHeight="37.0" prefWidth="183.0" text="Choose Image" />
       <ImageView fx:id="imageView" fitHeight="650.0" fitWidth="940.0" layoutX="22.0" layoutY="83.0" onMouseClicked="#clickOnImage" pickOnBounds="true" preserveRatio="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
       <TextField fx:id="textField1" editable="false" layoutX="1000.0" layoutY="50.0" promptText="click on image" />
-      <Label layoutX="1000.0" layoutY="34.0" text="Coords1" />
+      <Label focusTraversable="false" layoutX="1000.0" layoutY="34.0" text="Coords1" />
       <TextField fx:id="textField2" editable="false" layoutX="1000.0" layoutY="120.0" promptText="click on image" />
       <TextField fx:id="textField3" editable="false" layoutX="1000.0" layoutY="190.0" promptText="click on image" />
       <TextField fx:id="textField4" layoutX="1000.0" layoutY="260.0" promptText="click on image" />
       <TextField fx:id="textField5" editable="false" layoutX="1000.0" layoutY="330.0" promptText="click on image" />
       <TextField fx:id="textField6" editable="false" layoutX="1000.0" layoutY="400.0" promptText="click on image" />
       <TextField fx:id="textField7" editable="false" layoutX="1000.0" layoutY="470.0" promptText="click on image" />
-      <Label layoutX="1000.0" layoutY="104.0" text="Coords2" />
-      <Label layoutX="1000.0" layoutY="174.0" text="Coords3" />
-      <Label layoutX="1000.0" layoutY="244.0" text="Coords5" />
-      <Label layoutX="1000.0" layoutY="314.0" text="Coords6" />
-      <Label layoutX="1000.0" layoutY="384.0" text="Coords7" />
-      <Label layoutX="1000.0" layoutY="454.0" text="Coords8" />
-      <Button fx:id="computeButton" layoutX="1030.0" layoutY="574.0" mnemonicParsing="false" onAction="#computeInvisiblePoint" prefHeight="52.0" prefWidth="111.0" text="Compute" />
-      <Button fx:id="clearButton" layoutX="1030.0" layoutY="510.0" mnemonicParsing="false" onAction="#clearTextFields" prefHeight="37.0" prefWidth="111.0" text="Clear" />
+      <Label focusTraversable="false" layoutX="1000.0" layoutY="104.0" text="Coords2" />
+      <Label focusTraversable="false" layoutX="1000.0" layoutY="174.0" text="Coords3" />
+      <Label focusTraversable="false" layoutX="1000.0" layoutY="244.0" text="Coords5" />
+      <Label focusTraversable="false" layoutX="1000.0" layoutY="314.0" text="Coords6" />
+      <Label focusTraversable="false" layoutX="1000.0" layoutY="384.0" text="Coords7" />
+      <Label focusTraversable="false" layoutX="1000.0" layoutY="454.0" text="Coords8" />
+      <Button fx:id="computeButton" focusTraversable="false" layoutX="1030.0" layoutY="574.0" mnemonicParsing="false" onAction="#computeInvisiblePoint" prefHeight="52.0" prefWidth="111.0" text="Compute" />
+      <Button fx:id="clearButton" focusTraversable="false" layoutX="1030.0" layoutY="510.0" mnemonicParsing="false" onAction="#clearTextFields" prefHeight="37.0" prefWidth="111.0" text="Clear" />
       <Label fx:id="lblClick7" layoutX="1000.0" layoutY="630.0" prefHeight="16.0" prefWidth="171.0" text="Click on 7 points!" textFill="#fc0505" visible="false" />
-      <TextField fx:id="tfImage" alignment="BOTTOM_LEFT" editable="false" layoutX="228.0" layoutY="31.0" onAction="#chooseImage" prefHeight="24.0" prefWidth="720.0" promptText="file name will appear here" />
-      <TextField fx:id="tfResult" alignment="CENTER" editable="false" layoutX="1000.0" layoutY="659.0" onAction="#computeInvisiblePoint" prefHeight="72.0" prefWidth="171.0" promptText="RESULT - Coords4" />
+      <TextField fx:id="tfImage" alignment="BOTTOM_LEFT" editable="false" focusTraversable="false" layoutX="228.0" layoutY="31.0" onAction="#chooseImageButtonPressed" prefHeight="24.0" prefWidth="720.0" promptText="file name will appear here" />
+      <TextField fx:id="tfResult" alignment="CENTER" editable="false" focusTraversable="false" layoutX="1000.0" layoutY="659.0" onAction="#computeInvisiblePoint" prefHeight="72.0" prefWidth="171.0" promptText="RESULT - Coords4" />
    </children>
 </AnchorPane>
