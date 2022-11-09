@@ -20,16 +20,38 @@ public class ControllerMainMenu {
     public ToggleGroup tgChooseScene;
     public RadioButton rbSelect1;
     public RadioButton rbSelect2;
+    public Label lbImageNotFound;
 
     public void initialize() {
-        rbSelect1.setUserData(new Task("scene1.fxml", "1. Nevidljivo teme", "task1.txt",
+        rbSelect1.setUserData(new Task("scene1.fxml", "1. Nevidljivo teme",
+                "task1.txt",
                 Arrays.asList("task1preview.jpg", "task1preview2.jpg")));
 
-        rbSelect2.setUserData(new Task("scene2.fxml", "2. task2", "task1.txt",
-                Arrays.asList("task1preview.jpg")));
+        rbSelect2.setText("TASK 2: TRANSFORMATION MATRIX");
+        rbSelect2.setUserData(new Task("scene2.fxml", "2. Računanje projektivnog preslikavanja, otklanjanje distorzije, panorama",
+                "task2.txt",
+                Arrays.asList("task2preview1.png", "task2preview2.png", "task2preview3.png")));
+    }
+
+    private void setImage(String fName) {
+        File file = new File("src/main/resources/preview_images/" + fName);
+        if(!file.exists()) {
+            lbImageNotFound.setText("IMAGE " + fName + " NOT FOUND");
+            lbImageNotFound.setVisible(true);
+            lbImageNotFound.toFront();
+            ivScenePreview.setImage(null);
+            return;
+        }
+        ivScenePreview.setImage(new Image((file.toURI().toString())));
     }
 
     public void getInformation(ActionEvent e) {
+        btImagePrev.setDisable(true);
+        btImagePrev.setVisible(false);
+        btImageNext.setDisable(true);
+        btImageNext.setVisible(false);
+        lbImageNotFound.setVisible(false);
+
         Task selectedTask = getTask();
         if (selectedTask == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -51,13 +73,8 @@ public class ControllerMainMenu {
         taSceneDesc.setText(desc);
         tfSceneName.setText(selectedTask.name);
 
-        ivScenePreview.setImage(new Image(
-                (new File("src/main/resources/preview_images/" + selectedTask.previewImages.get(0)))
-                        .toURI().toString())
-        );
+        setImage(selectedTask.previewImages.get(0));
 
-        btImagePrev.setDisable(true);
-        btImagePrev.setVisible(false);
         if (selectedTask.hasNextImage()) {
             btImageNext.setDisable(false);
             btImageNext.setVisible(true);
@@ -81,6 +98,7 @@ public class ControllerMainMenu {
     }
     
     public void nextPreviewImage(ActionEvent e) {
+        lbImageNotFound.setVisible(false);
         Task selectedTask = getTask();
         if(selectedTask == null || !selectedTask.hasNextImage())
             return;
@@ -95,13 +113,11 @@ public class ControllerMainMenu {
             selectedTask.previousPreviewImage();
         }
 
-        ivScenePreview.setImage(new Image(
-                (new File("src/main/resources/preview_images/" + nextImg))
-                        .toURI().toString())
-        );
+        setImage(nextImg);
     }
 
     public void previousPreviewImage(ActionEvent e) {
+        lbImageNotFound.setVisible(false);
         Task selectedTask = getTask();
         if(selectedTask == null || !selectedTask.hasPreviousImage())
             return;
@@ -116,10 +132,7 @@ public class ControllerMainMenu {
             selectedTask.nextPreviewImage();
         }
 
-        ivScenePreview.setImage(new Image(
-                (new File("src/main/resources/preview_images/" + prevImg))
-                        .toURI().toString())
-        );
+        setImage(prevImg);
     }
 
     private Task getTask() {

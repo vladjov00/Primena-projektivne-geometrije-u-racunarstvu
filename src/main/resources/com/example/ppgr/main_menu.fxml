@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -30,5 +31,6 @@
       <RadioButton fx:id="rbSelect3" layoutX="35.0" layoutY="340.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="60.0" prefWidth="300.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 3: N/A" toggleGroup="$tgChooseScene" />
       <RadioButton fx:id="rbSelect4" layoutX="35.0" layoutY="500.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="60.0" prefWidth="300.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 4: N/A" toggleGroup="$tgChooseScene" />
       <RadioButton fx:id="rbSelect5" layoutX="35.0" layoutY="640.0" mnemonicParsing="false" onAction="#getInformation" prefHeight="60.0" prefWidth="300.0" stylesheets="@../../../stylesheets/main_menu.css" text="TASK 5: N/A" toggleGroup="$tgChooseScene" />
+      <Label fx:id="lbImageNotFound" focusTraversable="false" layoutX="731.0" layoutY="304.0" text="IMAGE DOES NOT EXIST!" textFill="RED" visible="false" />
    </children>
 </AnchorPane>

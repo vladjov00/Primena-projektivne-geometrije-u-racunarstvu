@@ -1,0 +1,1 @@
+Računanje projektivnog preslikavanja, otklanjanje distorzije, panorama
