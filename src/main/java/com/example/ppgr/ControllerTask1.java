@@ -2,6 +2,7 @@ package com.example.ppgr;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -11,7 +12,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 
@@ -51,6 +55,10 @@ public class ControllerTask1 extends ButtonAction {
         File selectedFile = chooseImage(imageView, tfImage);
         if(selectedFile != null)
             imageChosen = true;
+    }
+
+    public void backToMainMenuButtonPressed(ActionEvent e) throws IOException {
+        backToMainMenu((Stage) ((Node) e.getSource()).getScene().getWindow());
     }
 
     private void addPoint(double x, double y, Color color){

@@ -29,12 +29,6 @@ public class ControllerMainMenu {
                 Arrays.asList("task1preview.jpg")));
     }
 
-    public static String readFileAsString(String fileName) throws IOException {
-        String data;
-        data = new String(Files.readAllBytes(Paths.get(fileName)));
-        return data;
-    }
-
     public void getInformation(ActionEvent e) {
         Task selectedTask = getTask();
         if (selectedTask == null) {
@@ -47,7 +41,7 @@ public class ControllerMainMenu {
 
         String desc, descSR, descEN;
         try {
-            desc = readFileAsString("src/main/resources/task_descriptions/" + selectedTask.descFile);
+            desc = Util.readFileAsString("src/main/resources/task_descriptions/" + selectedTask.descFile);
             descSR = desc.substring(desc.indexOf('~') + 2);
             descEN = desc.substring(desc.lastIndexOf('~') + 2);
         } catch (IOException ex) {

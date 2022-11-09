@@ -2,9 +2,11 @@ package com.example.ppgr;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,6 +30,11 @@ public class Task {
             iterator.next();
     }
 
+    /**
+     * Switch to another scene defined by this.fxmlName
+     * @param e
+     * @throws IOException
+     */
     public void load(ActionEvent e) throws IOException {
         var fxmlSource = getClass().getResource(fxmlName);
         if(fxmlSource == null)
@@ -39,6 +46,7 @@ public class Task {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        Util.setStageOnCenter(stage);
         stage.show();
     }
 

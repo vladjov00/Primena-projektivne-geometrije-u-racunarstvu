@@ -1,7 +1,14 @@
 package com.example.ppgr;
 
+/**
+ *  A general class of matrices that contains different classes and operations for matrices of
+ *  specific size.
+ */
 public class Matrix {
 
+    /**
+     * Matrix of size 3 x 3
+     */
     public static class Matrix3x3 {
         private Vector v1;
         private Vector v2;
@@ -75,7 +82,7 @@ public class Matrix {
         public String toString() {
             return  "[ [ " + String.format("%.3f", v1.getX()) + " " + String.format("%.3f", v2.getX()) + " " + String.format("%.3f", v3.getX()) + " ]\n" +
                     "  [ " + String.format("%.3f", v1.getY()) + " " + String.format("%.3f", v2.getY()) + " " + String.format("%.3f", v3.getY()) + " ]\n" +
-                    "  [ " + v1.getZ() + " " + String.format("%.3f", v2.getZ()) + " " + String.format("%.3f", v3.getZ()) + " ] ]";
+                    "  [ " + String.format("%.3f", v1.getZ()) + " " + String.format("%.3f", v2.getZ()) + " " + String.format("%.3f", v3.getZ()) + " ] ]";
         }
     }
 
