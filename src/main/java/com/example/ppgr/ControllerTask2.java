@@ -6,7 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -15,13 +15,15 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.IntBuffer;
 import java.util.Objects;
 
-public class ControllerTask2 extends ButtonAction{
+public class ControllerTask2 extends ButtonAction {
 
-    public Button btChooseImage1, btChooseImage2;
-    public Button btClear1, btClear2, btCompute;
+    public Button btChooseImageTransform, btChooseImage2;
+    public Button btClear1, btClear2, btCompute, btTransformImageNaive;
     public Button btBackToMainMenu;
     public ImageView ivCoordinateSystem1, ivCoordinateSystem2, ivImage1, ivImage2;
     public TextField tfImage1, tfImage2;
@@ -29,7 +31,9 @@ public class ControllerTask2 extends ButtonAction{
     public TextArea taResult;
     public AnchorPane window, apCoords1, apCoords2;
 
+
     private int[] counters;
+    private Arrow arrowTransform;
     private boolean image1Chosen;
     private boolean image2Chosen;
 
@@ -67,13 +71,43 @@ public class ControllerTask2 extends ButtonAction{
         public TextField[] getTfArray() { return tfArray; }
     }
 
+    private static class ChooseImageButtonData {
+        private ImageView iv;
+        private TextField tf;
+        private ChooseImageButtonID id;
+
+        public ChooseImageButtonData(ImageView iv, TextField tf, ChooseImageButtonID id) {
+            this.id = id;
+            this.iv = iv;
+            this.tf = tf;
+        }
+
+        public ChooseImageButtonID getId() {
+            return id;
+        }
+
+        public ImageView getIv() {
+            return iv;
+        }
+
+        public TextField getTf() {
+            return tf;
+        }
+    }
+
+    private enum ChooseImageButtonID {
+        TRANSFORM
+    }
+
     public void initialize() {
         Arrow arrow1 = new Arrow(400, 200, 500, 200, 15);
         Arrow arrow2 = new Arrow(1250, 40, 1300, 40, 5);
         Arrow arrow3 = new Arrow(1250, 90, 1300, 90, 5);
         Arrow arrow4 = new Arrow(1250, 140, 1300, 140, 5);
         Arrow arrow5 = new Arrow(1250, 190, 1300, 190, 5);
-        window.getChildren().addAll(arrow1, arrow2, arrow3, arrow4, arrow5);
+        arrowTransform = new Arrow(640, 388, 475, 388, 7);
+        arrowTransform.setVisible(false);
+        window.getChildren().addAll(arrow1, arrow2, arrow3, arrow4, arrow5, arrowTransform);
         counters = new int[4];
         TextField[] tfArray1 = {tfAx, tfAy, tfAz, tfBx, tfBy, tfBz, tfCx, tfCy, tfCz, tfDx, tfDy, tfDz};
         TextField[] tfArray2 = {tfApx, tfApy, tfApz, tfBpx, tfBpy, tfBpz, tfCpx, tfCpy, tfCpz, tfDpx, tfDpy, tfDpz};
@@ -82,6 +116,7 @@ public class ControllerTask2 extends ButtonAction{
         btClear1.setUserData(apCoords1);
         btClear2.setUserData(apCoords2);
         btCompute.setUserData(new AnchorPane[]{apCoords1, apCoords2});
+        btChooseImageTransform.setUserData(new ChooseImageButtonData(ivCoordinateSystem1, tfImage1, ChooseImageButtonID.TRANSFORM));
         image1Chosen = false;
         image2Chosen = false;
     }
@@ -90,13 +125,18 @@ public class ControllerTask2 extends ButtonAction{
         backToMainMenu((Stage) ((Node) e.getSource()).getScene().getWindow());
     }
 
-    public void chooseImage1ButtonPressed(){
-        chooseImage(ivImage1, tfImage1);
-        image1Chosen = true;
-    }
-    public void chooseImage2ButtonPressed(){
-        chooseImage(ivImage2, tfImage2);
-        image2Chosen = true;
+    public void chooseImageButtonPressed(ActionEvent e) {
+        ChooseImageButtonData data = (ChooseImageButtonData) ((Node) e.getSource()).getUserData();
+        File selectedFile = chooseImage(data.getIv(), data.getTf());
+        if(selectedFile == null)
+            return;
+
+        if(data.getId() == ChooseImageButtonID.TRANSFORM) {
+            arrowTransform.setVisible(true);
+            btTransformImageNaive.setDisable(false);
+            btTransformImageNaive.setVisible(true);
+        }
+
     }
 
     private Circle addPoint(double x, double y, Color color, AnchorPane ap, int counter){
@@ -242,4 +282,71 @@ public class ControllerTask2 extends ButtonAction{
         taResult.setText(P.toString());
     }
 
+    public void transformImage(ActionEvent e) {
+        Matrix.Matrix3x3 A = Matrix.loadMatrix3x3FromText(taResult.getText());
+        if(A == null)
+            return;
+
+        Image selectedImage = ivCoordinateSystem1.getImage();
+        PixelReader pixelReaderOriginal = selectedImage.getPixelReader();
+
+        int width = (int) selectedImage.getWidth();
+        int height = (int) selectedImage.getHeight();
+
+        WritableImage transformedImage = new WritableImage(width, height);
+        PixelWriter pixelWriter = transformedImage.getPixelWriter();
+        PixelReader pixelReaderTransform = transformedImage.getPixelReader();
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Color color = pixelReaderOriginal.getColor(x, y);
+                Vector v = new Vector(x,y);
+                Vector vp = A.multiplyBy(v).affinize();
+                pixelWriter.setColor(Math.max(0, Math.min(width-1, (int) vp.getX())),
+                        Math.max(0, Math.min(height-1, (int) vp.getY())), color);
+            }
+        }
+
+        for (int j = 1; j < height-1; j++) {
+            for (int i = 1; i < width - 1; i++) {
+                if(checkIfTransparent(i, j, pixelReaderTransform) == 0) {
+                    int count = checkIfTransparent(i-1, j-1, pixelReaderTransform) + checkIfTransparent(i-1, j, pixelReaderTransform) +
+                            checkIfTransparent(i-1, j+1, pixelReaderTransform) + checkIfTransparent(i, j-1, pixelReaderTransform) +
+                            checkIfTransparent(i, j+1, pixelReaderTransform) + checkIfTransparent(i+1, j-1, pixelReaderTransform) +
+                            checkIfTransparent(i+1, j, pixelReaderTransform) + checkIfTransparent(i+1, j+1, pixelReaderTransform);
+                    if(count != 0) {
+                        double r = pixelReaderTransform.getColor(i-1, j-1).getRed() + pixelReaderTransform.getColor(i-1, j).getRed() + 
+                                pixelReaderTransform.getColor(i-1, j+1).getRed() +
+                                pixelReaderTransform.getColor(i, j-1).getRed() + pixelReaderTransform.getColor(i, j+1).getRed()
+                                + pixelReaderTransform.getColor(i+1, j-1).getRed() +
+                                pixelReaderTransform.getColor(i+1, j).getRed() + pixelReaderTransform.getColor(i+1, j+1).getRed();
+                        r/=count;
+                        double g = pixelReaderTransform.getColor(i-1, j-1).getBlue() + pixelReaderTransform.getColor(i-1, j).getBlue() +
+                                pixelReaderTransform.getColor(i-1, j+1).getBlue() +
+                                pixelReaderTransform.getColor(i, j-1).getBlue() + pixelReaderTransform.getColor(i, j+1).getBlue()
+                                + pixelReaderTransform.getColor(i+1, j-1).getBlue() +
+                                pixelReaderTransform.getColor(i+1, j).getBlue() + pixelReaderTransform.getColor(i+1, j+1).getBlue();
+                        g/=count;
+                        double b = pixelReaderTransform.getColor(i-1, j-1).getGreen() + pixelReaderTransform.getColor(i-1, j).getGreen() +
+                                pixelReaderTransform.getColor(i-1, j+1).getGreen() +
+                                pixelReaderTransform.getColor(i, j-1).getGreen() + pixelReaderTransform.getColor(i, j+1).getGreen()
+                                + pixelReaderTransform.getColor(i+1, j-1).getGreen() +
+                                pixelReaderTransform.getColor(i+1, j).getGreen() + pixelReaderTransform.getColor(i+1, j+1).getGreen();
+                        b/=count;
+
+                        pixelWriter.setColor(i, j, new Color(r,g,b,1.0));
+                    }
+                }
+            }
+        }
+
+        ivCoordinateSystem2.setImage(transformedImage);
+
+    }
+
+    private int checkIfTransparent(int x, int y, PixelReader pixelReader) {
+        if(pixelReader.getColor(x, y).equals(Color.TRANSPARENT))
+            return 0;
+        return 1;
+    }
 }

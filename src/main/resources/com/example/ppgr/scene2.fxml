@@ -12,12 +12,8 @@
 
 <AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerTask2">
    <children>
-      <Button fx:id="btChooseImage1" focusTraversable="false" layoutX="22.0" layoutY="415.0" mnemonicParsing="false" onAction="#chooseImage1ButtonPressed" text="Choose Image" />
-      <ImageView fx:id="ivImage1" fitHeight="250.0" fitWidth="400.0" layoutX="22.0" layoutY="452.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="btChooseImage2" focusTraversable="false" layoutX="502.0" layoutY="416.0" mnemonicParsing="false" onAction="#chooseImage2ButtonPressed" text="Choose Image" />
-      <ImageView fx:id="ivImage2" fitHeight="250.0" fitWidth="400.0" layoutX="502.0" layoutY="452.0" pickOnBounds="true" preserveRatio="true" />
-      <TextField fx:id="tfImage1" editable="false" focusTraversable="false" layoutX="162.0" layoutY="415.0" prefHeight="25.0" prefWidth="300.0" />
-      <TextField fx:id="tfImage2" editable="false" focusTraversable="false" layoutX="641.0" layoutY="415.0" prefHeight="25.0" prefWidth="300.0" />
+      <Button fx:id="btChooseImageTransform" focusTraversable="false" layoutX="28.0" layoutY="376.0" mnemonicParsing="false" onAction="#chooseImageButtonPressed" text="Choose Image" />
+      <TextField fx:id="tfImage1" editable="false" focusTraversable="false" layoutX="146.0" layoutY="376.0" prefHeight="25.0" prefWidth="324.0" />
       <ImageView fx:id="ivCoordinateSystem1" fitHeight="345.0" fitWidth="356.0" layoutX="28.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../preview_images/coordinate_system.jpg" />
@@ -177,5 +173,6 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
+      <Button fx:id="btTransformImageNaive" disable="true" focusTraversable="false" layoutX="651.0" layoutY="376.0" mnemonicParsing="false" onAction="#transformImage" prefHeight="24.0" prefWidth="103.0" text="Transform" visible="false" />
    </children>
 </AnchorPane>

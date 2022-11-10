@@ -1,5 +1,9 @@
 package com.example.ppgr;
 
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 /**
  *  A general class of matrices that contains different classes and operations for matrices of
  *  specific size.
@@ -56,6 +60,13 @@ public class Matrix {
 
         public Matrix3x3 multiplyBy(double scalar) {
             return new Matrix3x3(v1.multiplyBy(scalar), v2.multiplyBy(scalar), v3.multiplyBy(scalar));
+        }
+
+        public Vector multiplyBy(Vector v) {
+            double[] a = this.getElementsAsArray();
+            return new Vector(a[0] * v.getX() + a[1] * v.getY() + a[2] * v.getZ(),
+                    a[3] * v.getX() + a[4] * v.getY() + a[5] * v.getZ(),
+                    a[6] * v.getX() + a[7] * v.getY() + a[8] * v.getZ());
         }
 
 //        private int euclid(int a, int b) {
@@ -137,6 +148,34 @@ public class Matrix {
         double M22 = M.getV1().getX() * M.getV2().getY() - M.getV2().getX() * M.getV1().getY();
 
         return new Matrix3x3(M00, M01, M02, M10, M11, M12, M20, M21, M22);
+    }
+
+    public static Matrix3x3 loadMatrix3x3FromText(String text) {
+        try (Scanner scanner = new Scanner(text)) {
+
+            scanner.next();
+            scanner.next();
+            double a00 = scanner.nextDouble();
+            double a01 = scanner.nextDouble();
+            double a02 = scanner.nextDouble();
+            scanner.next();
+            scanner.next();
+            double a10 = scanner.nextDouble();
+            double a11 = scanner.nextDouble();
+            double a12 = scanner.nextDouble();
+            scanner.next();
+            scanner.next();
+            double a20 = scanner.nextDouble();
+            double a21 = scanner.nextDouble();
+            double a22 = scanner.nextDouble();
+
+            return new Matrix3x3(a00, a01, a02, a10, a11, a12, a20, a21, a22);
+        }
+        catch (NoSuchElementException e1) {
+            System.out.println("Bad format!");
+            return null;
+        }
+
     }
 
 }
