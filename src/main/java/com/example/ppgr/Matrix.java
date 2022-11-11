@@ -32,6 +32,15 @@ public class Matrix {
             this.v3 = new Vector(a02, a12, a22);
         }
 
+        public Matrix3x3(double[] elements) throws Exception {
+            if(elements.length != 9) {
+                throw new Exception("Length of array must be 9!");
+            }
+            this.v1 = new Vector(elements[0], elements[3], elements[6]);
+            this.v2 = new Vector(elements[1], elements[4], elements[7]);
+            this.v3 = new Vector(elements[2], elements[5], elements[8]);
+        }
+
         public Vector getV1() {
             return v1;
         }
@@ -69,7 +78,7 @@ public class Matrix {
                     a[6] * v.getX() + a[7] * v.getY() + a[8] * v.getZ());
         }
 
-//        private int euclid(int a, int b) {
+//        private long euclid(long a, long b) {
 //            if(a == 0) return b;
 //            if(b == 0) return a;
 //
@@ -78,15 +87,21 @@ public class Matrix {
 //            else return euclid(a, b-a);
 //        }
 //
-//        public Matrix3x3 reduce() {
-//            int gcf = 0;
+//        public Matrix3x3 reduce() throws Exception {
+//            long gcf = 0;
 //            double[] elements = this.getElementsAsArray();
+//            for(int i = 0; i<9; i++) {
+//                elements[i] = Math.round(elements[i] * 1000);
+//            }
+//            Matrix3x3 T = new Matrix3x3(elements);
+//            System.out.println(T);
 //
 //            for(int i = 0; i < 9; i++) {
-//                gcf = euclid(gcf, (int)elements[i]);
+//                gcf = euclid(gcf, (long)Math.abs(elements[i]));
+//                System.out.println("gcf: " + gcf);
 //            }
 //
-//            return this.multiplyBy((double)1/gcf);
+//            return T.multiplyBy(1.0 / (gcf*1.0));
 //        }
 
         @Override
@@ -176,6 +191,24 @@ public class Matrix {
             return null;
         }
 
+    }
+
+    public static class Matrix2x9 {
+        private Vector v0;
+        private Vector v1;
+        private Vector v2;
+        private Vector v3;
+        private Vector v4;
+        private Vector v5;
+
+        public Matrix2x9(Vector v0, Vector v1, Vector v2, Vector v3, Vector v4, Vector v5) {
+            this.v0 = v0;
+            this.v1 = v1;
+            this.v2 = v2;
+            this.v3 = v3;
+            this.v4 = v4;
+            this.v5 = v5;
+        }
     }
 
 }

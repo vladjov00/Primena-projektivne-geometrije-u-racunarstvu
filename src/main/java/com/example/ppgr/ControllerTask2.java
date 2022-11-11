@@ -236,30 +236,64 @@ public class ControllerTask2 extends ButtonAction {
         return new double[]{Dx/D, Dy/D, Dz/D};
     }
 
-    public void computeTransformationMatrixNaive(ActionEvent e) {
+    private Vector[] readVectorsFromTextFields(ActionEvent e) {
         TextField[] points1 = ((AnchorPaneData) ((AnchorPane[]) ((Node)e.getSource()).getUserData())[0].getUserData()).getTfArray();
         TextField[] points2 = ((AnchorPaneData) ((AnchorPane[]) ((Node)e.getSource()).getUserData())[1].getUserData()).getTfArray();
 
         for(TextField tf : points1) {
-            if(Objects.equals(tf.getText(), "")) return;
+            if(Objects.equals(tf.getText(), "")) return null;
         }
         for(TextField tf : points2) {
-            if(Objects.equals(tf.getText(), "")) return;
+            if(Objects.equals(tf.getText(), "")) return null;
         }
 
-        Vector[] vectorsBefore = new Vector[4];
-        Vector[] vectorsAfter = new Vector[4];
+        Vector[] vectors = new Vector[8];
 
         for(int i = 0; i < 4; i++) {
-            vectorsBefore[i] = new Vector(Double.parseDouble(points1[i*3].getText()),
+            vectors[i] = new Vector(Double.parseDouble(points1[i*3].getText()),
                     Double.parseDouble(points1[i*3+1].getText()),
                     Double.parseDouble(points1[i*3+2].getText())
             );
-            vectorsAfter[i] = new Vector(Double.parseDouble(points2[i*3].getText()),
+            vectors[i+4] = new Vector(Double.parseDouble(points2[i*3].getText()),
                     Double.parseDouble(points2[i*3+1].getText()),
                     Double.parseDouble(points2[i*3+2].getText())
             );
         }
+
+        return vectors;
+    }
+
+    public void computeTransformationMatrixDLT(ActionEvent e) {
+        Vector[] vs = readVectorsFromTextFields(e);
+        if(vs == null) return;
+
+        Matrix.Matrix2x9[] matrix2x9s = new Matrix.Matrix2x9[4];
+        for(int i = 0; i < 4; i++) {
+            double xp = vs[i+4].getX();
+            double yp = vs[i+4].getY();
+            double zp = vs[i+4].getZ();
+
+            matrix2x9s[i] = new Matrix.Matrix2x9(
+                    new Vector(0, 0, 0),
+                    vs[i].multiplyBy(-zp),
+                    vs[i].multiplyBy(-yp),
+                    vs[i].multiplyBy(zp),
+                    new Vector(0, 0, 0),
+                    vs[i].multiplyBy(xp)
+            );
+        }
+
+    }
+
+    public void computeTransformationMatrixNaive(ActionEvent e) {
+        Vector[] vectors = readVectorsFromTextFields(e);
+        if(vectors == null) return;
+
+        Vector[] vectorsBefore = new Vector[4];
+        System.arraycopy(vectors, 0, vectorsBefore, 0, 4);
+
+        Vector[] vectorsAfter = new Vector[4];
+        System.arraycopy(vectors, 4, vectorsAfter, 0, 4);
 
         double[] vP1 = solve3x3(vectorsBefore);
         if(vP1 == null) { return; }
@@ -297,8 +331,25 @@ public class ControllerTask2 extends ButtonAction {
         PixelWriter pixelWriter = transformedImage.getPixelWriter();
         PixelReader pixelReaderTransform = transformedImage.getPixelReader();
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+//        try {
+//            Matrix.Matrix3x3 invA = Matrix.inverse(A);
+//            for (int y = 0; y < selectedImage.getHeight(); y++) {
+//                for (int x = 0; x < selectedImage.getWidth(); x++) {
+//                    Color color = pixelReaderOriginal.getColor(x, y);
+//                    Vector v = new Vector(x,y);
+//                    Vector vp = A.multiplyBy(v).affinize();
+//                    pixelWriter.setColor(Math.max(0, Math.min(width-1, (int) vp.getX())),
+//                            Math.max(0, Math.min(height-1, (int) vp.getY())), color);
+//                }
+//            }
+//
+//
+//        } catch (Exception ex) {
+//            System.out.println("Matrix is not invertible!");
+//            return;
+//        }
+        for (int y = 0; y < selectedImage.getHeight(); y++) {
+            for (int x = 0; x < selectedImage.getWidth(); x++) {
                 Color color = pixelReaderOriginal.getColor(x, y);
                 Vector v = new Vector(x,y);
                 Vector vp = A.multiplyBy(v).affinize();
@@ -308,30 +359,30 @@ public class ControllerTask2 extends ButtonAction {
         }
 
         for (int j = 1; j < height-1; j++) {
-            for (int i = 1; i < width - 1; i++) {
+            for (int i = 1; i < width-1; i++) {
                 if(checkIfTransparent(i, j, pixelReaderTransform) == 0) {
                     int count = checkIfTransparent(i-1, j-1, pixelReaderTransform) + checkIfTransparent(i-1, j, pixelReaderTransform) +
                             checkIfTransparent(i-1, j+1, pixelReaderTransform) + checkIfTransparent(i, j-1, pixelReaderTransform) +
                             checkIfTransparent(i, j+1, pixelReaderTransform) + checkIfTransparent(i+1, j-1, pixelReaderTransform) +
                             checkIfTransparent(i+1, j, pixelReaderTransform) + checkIfTransparent(i+1, j+1, pixelReaderTransform);
                     if(count != 0) {
-                        double r = pixelReaderTransform.getColor(i-1, j-1).getRed() + pixelReaderTransform.getColor(i-1, j).getRed() + 
+                        double r = pixelReaderTransform.getColor(i-1, j-1).getRed() + pixelReaderTransform.getColor(i-1, j).getRed() +
                                 pixelReaderTransform.getColor(i-1, j+1).getRed() +
-                                pixelReaderTransform.getColor(i, j-1).getRed() + pixelReaderTransform.getColor(i, j+1).getRed()
-                                + pixelReaderTransform.getColor(i+1, j-1).getRed() +
+                                pixelReaderTransform.getColor(i, j-1).getRed() + pixelReaderTransform.getColor(i, j+1).getRed() +
+                                pixelReaderTransform.getColor(i+1, j-1).getRed() +
                                 pixelReaderTransform.getColor(i+1, j).getRed() + pixelReaderTransform.getColor(i+1, j+1).getRed();
                         r/=count;
-                        double g = pixelReaderTransform.getColor(i-1, j-1).getBlue() + pixelReaderTransform.getColor(i-1, j).getBlue() +
-                                pixelReaderTransform.getColor(i-1, j+1).getBlue() +
-                                pixelReaderTransform.getColor(i, j-1).getBlue() + pixelReaderTransform.getColor(i, j+1).getBlue()
-                                + pixelReaderTransform.getColor(i+1, j-1).getBlue() +
-                                pixelReaderTransform.getColor(i+1, j).getBlue() + pixelReaderTransform.getColor(i+1, j+1).getBlue();
-                        g/=count;
-                        double b = pixelReaderTransform.getColor(i-1, j-1).getGreen() + pixelReaderTransform.getColor(i-1, j).getGreen() +
+                        double g = pixelReaderTransform.getColor(i-1, j-1).getGreen() + pixelReaderTransform.getColor(i-1, j).getGreen() +
                                 pixelReaderTransform.getColor(i-1, j+1).getGreen() +
-                                pixelReaderTransform.getColor(i, j-1).getGreen() + pixelReaderTransform.getColor(i, j+1).getGreen()
-                                + pixelReaderTransform.getColor(i+1, j-1).getGreen() +
+                                pixelReaderTransform.getColor(i, j-1).getGreen() + pixelReaderTransform.getColor(i, j+1).getGreen() +
+                                pixelReaderTransform.getColor(i+1, j-1).getGreen() +
                                 pixelReaderTransform.getColor(i+1, j).getGreen() + pixelReaderTransform.getColor(i+1, j+1).getGreen();
+                        g/=count;
+                        double b = pixelReaderTransform.getColor(i-1, j-1).getBlue() + pixelReaderTransform.getColor(i-1, j).getBlue() +
+                                pixelReaderTransform.getColor(i-1, j+1).getBlue() +
+                                pixelReaderTransform.getColor(i, j-1).getBlue() + pixelReaderTransform.getColor(i, j+1).getBlue() +
+                                pixelReaderTransform.getColor(i+1, j-1).getBlue() +
+                                pixelReaderTransform.getColor(i+1, j).getBlue() + pixelReaderTransform.getColor(i+1, j+1).getBlue();
                         b/=count;
 
                         pixelWriter.setColor(i, j, new Color(r,g,b,1.0));
@@ -339,10 +390,10 @@ public class ControllerTask2 extends ButtonAction {
                 }
             }
         }
-
         ivCoordinateSystem2.setImage(transformedImage);
 
     }
+
 
     private int checkIfTransparent(int x, int y, PixelReader pixelReader) {
         if(pixelReader.getColor(x, y).equals(Color.TRANSPARENT))
