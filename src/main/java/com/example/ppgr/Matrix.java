@@ -78,31 +78,25 @@ public class Matrix {
                     a[6] * v.getX() + a[7] * v.getY() + a[8] * v.getZ());
         }
 
-//        private long euclid(long a, long b) {
-//            if(a == 0) return b;
-//            if(b == 0) return a;
-//
-//            if(a == b) return a;
-//            else if(a > b) return euclid(a-b, b);
-//            else return euclid(a, b-a);
-//        }
-//
-//        public Matrix3x3 reduce() throws Exception {
-//            long gcf = 0;
-//            double[] elements = this.getElementsAsArray();
-//            for(int i = 0; i<9; i++) {
-//                elements[i] = Math.round(elements[i] * 1000);
-//            }
-//            Matrix3x3 T = new Matrix3x3(elements);
-//            System.out.println(T);
-//
-//            for(int i = 0; i < 9; i++) {
-//                gcf = euclid(gcf, (long)Math.abs(elements[i]));
-//                System.out.println("gcf: " + gcf);
-//            }
-//
-//            return T.multiplyBy(1.0 / (gcf*1.0));
-//        }
+        private long euclid(long a, long b) {
+            if(a == 0) return b;
+            if(b == 0) return a;
+
+            if(a == b) return a;
+            else if(a > b) return euclid(a%b, b);
+            else return euclid(a, b%a);
+        }
+
+        public Matrix3x3 reduce() {
+            long gcf = 0;
+            double[] elements = this.getElementsAsArray();
+
+            for(int i = 0; i < 9; i++) {
+                gcf = euclid(gcf, (long)Math.abs(elements[i]));
+            }
+
+            return this.multiplyBy(1.0 / gcf);
+        }
 
         @Override
         public String toString() {
@@ -143,7 +137,7 @@ public class Matrix {
             throw new Exception("Determinant equals 0!");
         }
 
-        return adj.multiplyBy(det);
+        return adj; // for the purposes of task2 there is no need to multiply by 1/det
     }
 
     public static Matrix3x3 cofactors(Matrix3x3 M) {
@@ -192,23 +186,4 @@ public class Matrix {
         }
 
     }
-
-    public static class Matrix2x9 {
-        private Vector v0;
-        private Vector v1;
-        private Vector v2;
-        private Vector v3;
-        private Vector v4;
-        private Vector v5;
-
-        public Matrix2x9(Vector v0, Vector v1, Vector v2, Vector v3, Vector v4, Vector v5) {
-            this.v0 = v0;
-            this.v1 = v1;
-            this.v2 = v2;
-            this.v3 = v3;
-            this.v4 = v4;
-            this.v5 = v5;
-        }
-    }
-
 }

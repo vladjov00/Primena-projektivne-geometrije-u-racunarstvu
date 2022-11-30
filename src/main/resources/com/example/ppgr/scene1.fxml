@@ -16,14 +16,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <TextField fx:id="textField1" editable="false" layoutX="1004.0" layoutY="53.0" promptText="click on image" />
+      <TextField fx:id="textField1" editable="false" focusTraversable="false" layoutX="1004.0" layoutY="53.0" promptText="click on image" />
       <Label focusTraversable="false" layoutX="1004.0" layoutY="37.0" text="Coords1" />
-      <TextField fx:id="textField2" editable="false" layoutX="1004.0" layoutY="123.0" promptText="click on image" />
-      <TextField fx:id="textField3" editable="false" layoutX="1004.0" layoutY="193.0" promptText="click on image" />
-      <TextField fx:id="textField4" layoutX="1004.0" layoutY="263.0" promptText="click on image" />
-      <TextField fx:id="textField5" editable="false" layoutX="1004.0" layoutY="333.0" promptText="click on image" />
-      <TextField fx:id="textField6" editable="false" layoutX="1004.0" layoutY="403.0" promptText="click on image" />
-      <TextField fx:id="textField7" editable="false" layoutX="1004.0" layoutY="473.0" promptText="click on image" />
+      <TextField fx:id="textField2" editable="false" focusTraversable="false" layoutX="1004.0" layoutY="123.0" promptText="click on image" />
+      <TextField fx:id="textField3" editable="false" focusTraversable="false" layoutX="1004.0" layoutY="193.0" promptText="click on image" />
+      <TextField fx:id="textField4" editable="false" focusTraversable="false" layoutX="1004.0" layoutY="263.0" promptText="click on image" />
+      <TextField fx:id="textField5" editable="false" focusTraversable="false" layoutX="1004.0" layoutY="333.0" promptText="click on image" />
+      <TextField fx:id="textField6" editable="false" focusTraversable="false" layoutX="1004.0" layoutY="403.0" promptText="click on image" />
+      <TextField fx:id="textField7" editable="false" focusTraversable="false" layoutX="1004.0" layoutY="473.0" promptText="click on image" />
       <Label focusTraversable="false" layoutX="1004.0" layoutY="107.0" text="Coords2" />
       <Label focusTraversable="false" layoutX="1004.0" layoutY="177.0" text="Coords3" />
       <Label focusTraversable="false" layoutX="1004.0" layoutY="247.0" text="Coords5" />

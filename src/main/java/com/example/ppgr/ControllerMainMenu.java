@@ -6,8 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class ControllerMainMenu {
@@ -18,8 +16,7 @@ public class ControllerMainMenu {
     public Button btImagePrev;
     public Button btImageNext;
     public ToggleGroup tgChooseScene;
-    public RadioButton rbSelect1;
-    public RadioButton rbSelect2;
+    public RadioButton rbSelect1, rbSelect2, rbSelect3;
     public Label lbImageNotFound;
 
     public void initialize() {
@@ -27,10 +24,12 @@ public class ControllerMainMenu {
                 "task1.txt",
                 Arrays.asList("task1preview.jpg", "task1preview2.jpg")));
 
-        rbSelect2.setText("TASK 2: TRANSFORMATION MATRIX");
         rbSelect2.setUserData(new Task("scene2.fxml", "2. Računanje projektivnog preslikavanja, otklanjanje distorzije, panorama",
                 "task2.txt",
                 Arrays.asList("task2preview1.png", "task2preview2.png", "task2preview3.png")));
+
+        rbSelect3.setUserData(new Task("scene3.fxml", "3. Izometrije", "task3.txt",
+                Arrays.asList("task3preview1euler.gif", "task3preview2slerp.gif")));
     }
 
     private void setImage(String fName) {

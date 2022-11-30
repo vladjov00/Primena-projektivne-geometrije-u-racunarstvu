@@ -39,7 +39,7 @@ public class Task {
         var fxmlSource = getClass().getResource(fxmlName);
         if(fxmlSource == null)
         {
-            System.err.println("INVALID FXML SOURCE FILE!");
+            System.err.println("INVALID FXML SOURCE FILE! (" + fxmlName + ")");
             return;
         }
         Parent root = FXMLLoader.load(fxmlSource);

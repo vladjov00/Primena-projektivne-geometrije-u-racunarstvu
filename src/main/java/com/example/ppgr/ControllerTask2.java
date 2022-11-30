@@ -15,8 +15,11 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.Objects;
 
@@ -217,14 +220,14 @@ public class ControllerTask2 extends ButtonAction {
     }
 
     private double[] solve3x3(Vector[] vectors) {
-        double eps = 1e-5;
+        double EPS = 1e-5;
 
         double Dx = Matrix.determinant3x3(new Matrix.Matrix3x3(vectors[3], vectors[1], vectors[2]));
         double Dy = Matrix.determinant3x3(new Matrix.Matrix3x3(vectors[0], vectors[3], vectors[2]));
         double Dz = Matrix.determinant3x3(new Matrix.Matrix3x3(vectors[0], vectors[1], vectors[3]));
         double D = Matrix.determinant3x3(new Matrix.Matrix3x3(vectors[0], vectors[1], vectors[2]));
 
-        if(Math.abs(Dx) < eps || Math.abs(Dy) < eps || Math.abs(Dz) < eps || Math.abs(D) < eps) {
+        if(Math.abs(Dx) < EPS || Math.abs(Dy) < EPS || Math.abs(Dz) < EPS || Math.abs(D) < EPS) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Kolinearni vektori");
             alert.setHeaderText("UPOZORENJE!");
@@ -233,7 +236,7 @@ public class ControllerTask2 extends ButtonAction {
             return null;
         }
 
-        return new double[]{Dx/D, Dy/D, Dz/D};
+        return new double[]{Dx, Dy, Dz};
     }
 
     private Vector[] readVectorsFromTextFields(ActionEvent e) {
@@ -263,28 +266,6 @@ public class ControllerTask2 extends ButtonAction {
         return vectors;
     }
 
-    public void computeTransformationMatrixDLT(ActionEvent e) {
-        Vector[] vs = readVectorsFromTextFields(e);
-        if(vs == null) return;
-
-        Matrix.Matrix2x9[] matrix2x9s = new Matrix.Matrix2x9[4];
-        for(int i = 0; i < 4; i++) {
-            double xp = vs[i+4].getX();
-            double yp = vs[i+4].getY();
-            double zp = vs[i+4].getZ();
-
-            matrix2x9s[i] = new Matrix.Matrix2x9(
-                    new Vector(0, 0, 0),
-                    vs[i].multiplyBy(-zp),
-                    vs[i].multiplyBy(-yp),
-                    vs[i].multiplyBy(zp),
-                    new Vector(0, 0, 0),
-                    vs[i].multiplyBy(xp)
-            );
-        }
-
-    }
-
     public void computeTransformationMatrixNaive(ActionEvent e) {
         Vector[] vectors = readVectorsFromTextFields(e);
         if(vectors == null) return;
@@ -298,29 +279,26 @@ public class ControllerTask2 extends ButtonAction {
         double[] vP1 = solve3x3(vectorsBefore);
         if(vP1 == null) { return; }
 
-        Matrix.Matrix3x3 P1 = new Matrix.Matrix3x3(vectorsBefore[0].multiplyBy(vP1[0]), vectorsBefore[1].multiplyBy(vP1[1]), vectorsBefore[2].multiplyBy(vP1[2]));
+        Matrix.Matrix3x3 P1 = new Matrix.Matrix3x3(vectorsBefore[0].multiplyBy(vP1[0]), vectorsBefore[1].multiplyBy(vP1[1]), vectorsBefore[2].multiplyBy(vP1[2])).reduce();
 
         double[] vP2 = solve3x3(vectorsAfter);
         if(vP2 == null) { return; }
 
-        Matrix.Matrix3x3 P2 = new Matrix.Matrix3x3(vectorsAfter[0].multiplyBy(vP2[0]), vectorsAfter[1].multiplyBy(vP2[1]), vectorsAfter[2].multiplyBy(vP2[2]));
+        Matrix.Matrix3x3 P2 = new Matrix.Matrix3x3(vectorsAfter[0].multiplyBy(vP2[0]), vectorsAfter[1].multiplyBy(vP2[1]), vectorsAfter[2].multiplyBy(vP2[2])).reduce();
 
         Matrix.Matrix3x3 P;
         try {
-            P = Matrix.multiply(P2, Matrix.inverse(P1));
+            P = Matrix.multiply(P2, Matrix.inverse(P1).reduce());
+            taResult.setText(P.reduce().toString());
         } catch (Exception ex) {
-            System.err.println("EXCEPTION");
-            return;
+            taResult.setText("Matrica P1 nema inverz!");
         }
-
-        taResult.setText(P.toString());
     }
 
     public void transformImage(ActionEvent e) {
         Matrix.Matrix3x3 A = Matrix.loadMatrix3x3FromText(taResult.getText());
         if(A == null)
             return;
-
         Image selectedImage = ivCoordinateSystem1.getImage();
         PixelReader pixelReaderOriginal = selectedImage.getPixelReader();
 
@@ -331,34 +309,16 @@ public class ControllerTask2 extends ButtonAction {
         PixelWriter pixelWriter = transformedImage.getPixelWriter();
         PixelReader pixelReaderTransform = transformedImage.getPixelReader();
 
-//        try {
-//            Matrix.Matrix3x3 invA = Matrix.inverse(A);
-//            for (int y = 0; y < selectedImage.getHeight(); y++) {
-//                for (int x = 0; x < selectedImage.getWidth(); x++) {
-//                    Color color = pixelReaderOriginal.getColor(x, y);
-//                    Vector v = new Vector(x,y);
-//                    Vector vp = A.multiplyBy(v).affinize();
-//                    pixelWriter.setColor(Math.max(0, Math.min(width-1, (int) vp.getX())),
-//                            Math.max(0, Math.min(height-1, (int) vp.getY())), color);
-//                }
-//            }
-//
-//
-//        } catch (Exception ex) {
-//            System.out.println("Matrix is not invertible!");
-//            return;
-//        }
-        for (int y = 0; y < selectedImage.getHeight(); y++) {
-            for (int x = 0; x < selectedImage.getWidth(); x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 Color color = pixelReaderOriginal.getColor(x, y);
                 Vector v = new Vector(x,y);
-                Vector vp = A.multiplyBy(v).affinize();
+                Vector vp = A.multiplyBy(v).affinize(); // mnozenje piksela matricom transormacije da bi se dobile koordinate novog piksela
                 pixelWriter.setColor(Math.max(0, Math.min(width-1, (int) vp.getX())),
                         Math.max(0, Math.min(height-1, (int) vp.getY())), color);
             }
         }
-
-        for (int j = 1; j < height-1; j++) {
+        for (int j = 1; j < height-1; j++) {    // interpolacija, uklanjanje praznih piksela
             for (int i = 1; i < width-1; i++) {
                 if(checkIfTransparent(i, j, pixelReaderTransform) == 0) {
                     int count = checkIfTransparent(i-1, j-1, pixelReaderTransform) + checkIfTransparent(i-1, j, pixelReaderTransform) +
@@ -391,7 +351,6 @@ public class ControllerTask2 extends ButtonAction {
             }
         }
         ivCoordinateSystem2.setImage(transformedImage);
-
     }
 
 
