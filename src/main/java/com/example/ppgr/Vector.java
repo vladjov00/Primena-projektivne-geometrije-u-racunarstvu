@@ -19,7 +19,7 @@ public class Vector {
 
     @Override
     public String toString() {
-        return "(" + x + ", " + y + ", " + z + ")";
+        return "(" + String.format("%.3f", x) + ", " + String.format("%.3f", y) + ", " + String.format("%.3f", z) + ")";
     }
 
     public double getX() {
@@ -48,6 +48,10 @@ public class Vector {
         return new Vector(this.x + v2.getX(), this.y + v2.getY(), this.z + v2.getZ());
     }
 
+    public Vector subtract(Vector v2) {
+        return new Vector(this.x - v2.getX(), this.y - v2.getY(), this.z - v2.getZ());
+    }
+
     public Vector divideBy(double c) { return new Vector(x / c, y / c, z / c); }
 
     public Vector affinize() {
@@ -55,4 +59,11 @@ public class Vector {
     }
 
     public Vector multiplyBy(double scalar) { return new Vector(x*scalar, y*scalar, z*scalar); }
+
+    public Vector norm() { return this.divideBy(Math.sqrt(x*x + y*y + z*z)); }
+
+    public boolean isZeroVector() {
+        double EPS = 0.0001;
+        return Math.abs(x) < EPS && Math.abs(y) < EPS && Math.abs(z) < EPS;
+    }
 }

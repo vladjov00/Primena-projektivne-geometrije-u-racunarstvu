@@ -98,6 +98,14 @@ public class Matrix {
             return this.multiplyBy(1.0 / gcf);
         }
 
+        public Matrix3x3 add(Matrix3x3 A) {
+            return new Matrix3x3(v1.add(A.getV1()), v2.add(A.getV2()), v2.add(A.getV2()));
+        }
+
+        public Matrix3x3 subtract(Matrix3x3 A) {
+            return new Matrix3x3(v1.subtract(A.getV1()), v2.subtract(A.getV2()), v3.subtract(A.getV3()));
+        }
+
         @Override
         public String toString() {
             return  "[ [ " + String.format("%.3f", v1.getX()) + " " + String.format("%.3f", v2.getX()) + " " + String.format("%.3f", v3.getX()) + " ]\n" +
@@ -158,6 +166,8 @@ public class Matrix {
 
         return new Matrix3x3(M00, M01, M02, M10, M11, M12, M20, M21, M22);
     }
+
+    public static Matrix3x3 identity3() { return new Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); }
 
     public static Matrix3x3 loadMatrix3x3FromText(String text) {
         try (Scanner scanner = new Scanner(text)) {

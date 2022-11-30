@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -36,8 +37,25 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="btFindRotationMatrix" layoutX="364.0" layoutY="38.0" mnemonicParsing="false" onAction="#findRotationMatrixButtonPressed" text="Find Rotation Matrix" />
-      <TextArea fx:id="taRotationMatrix" editable="false" focusTraversable="false" layoutX="538.0" layoutY="15.0" prefHeight="75.0" prefWidth="200.0" promptText="RESULT" />
+      <Button fx:id="btFindRotationMatrix" layoutX="380.0" layoutY="30.0" mnemonicParsing="false" onAction="#findRotationMatrixButtonPressed" prefHeight="41.0" prefWidth="150.0" text="Find Rotation Matrix" />
+      <TextArea fx:id="taRotationMatrix" editable="false" focusTraversable="false" layoutX="652.0" layoutY="13.0" prefHeight="75.0" prefWidth="200.0" promptText="RESULT" />
       <Label fx:id="lbInvalidInput" focusTraversable="false" layoutX="364.0" layoutY="74.0" text="Invalid input !" textFill="RED" visible="false" />
+      <Label focusTraversable="false" layoutX="592.0" layoutY="33.0" text="A =">
+         <font>
+            <Font size="28.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Label>
+      <Label layoutX="27.0" layoutY="98.0" text="A2AxisAngle:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="154.0" layoutY="100.0" text="p:" />
+      <TextField fx:id="tfP" editable="false" focusTraversable="false" layoutX="170.0" layoutY="96.0" prefHeight="24.0" prefWidth="200.0" />
+      <Label layoutX="410.0" layoutY="100.0" text="angle:" />
+      <TextField fx:id="tfAngle" editable="false" focusTraversable="false" layoutX="451.0" layoutY="96.0" prefHeight="24.0" prefWidth="220.0" />
    </children>
 </AnchorPane>
