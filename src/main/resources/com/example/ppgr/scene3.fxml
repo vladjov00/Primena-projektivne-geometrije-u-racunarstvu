@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.ppgr.ControllerTask3"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerTask3">
+   <children>
+      <TextField fx:id="tfPhi" layoutX="50.0" layoutY="38.0" prefHeight="24.0" prefWidth="60.0" />
+      <Button fx:id="btBackToMainMenu" focusTraversable="false" mnemonicParsing="false" onAction="#backToMainMenuButtonPressed" opacity="0.7" text="BACK">
+         <font>
+            <Font size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Label fx:id="lbPhi" focusTraversable="false" layoutX="25.0" layoutY="38.0" text="φ:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfTheta" layoutX="160.0" layoutY="38.0" prefHeight="24.0" prefWidth="60.0" />
+      <Label fx:id="lbTheta" focusTraversable="false" layoutX="135.0" layoutY="38.0" text="θ:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfPsi" layoutX="275.0" layoutY="38.0" prefHeight="24.0" prefWidth="60.0" />
+      <Label fx:id="lbPsi" focusTraversable="false" layoutX="245.0" layoutY="38.0" text="ψ:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="btFindRotationMatrix" layoutX="364.0" layoutY="38.0" mnemonicParsing="false" onAction="#findRotationMatrixButtonPressed" text="Find Rotation Matrix" />
+      <TextArea fx:id="taRotationMatrix" editable="false" focusTraversable="false" layoutX="538.0" layoutY="15.0" prefHeight="75.0" prefWidth="200.0" promptText="RESULT" />
+      <Label fx:id="lbInvalidInput" focusTraversable="false" layoutX="364.0" layoutY="74.0" text="Invalid input !" textFill="RED" visible="false" />
+   </children>
 </AnchorPane>

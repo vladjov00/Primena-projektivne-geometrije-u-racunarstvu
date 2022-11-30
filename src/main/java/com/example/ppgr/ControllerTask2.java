@@ -15,12 +15,9 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
+
 import java.util.Objects;
 
 public class ControllerTask2 extends ButtonAction {
