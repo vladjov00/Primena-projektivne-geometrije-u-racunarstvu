@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerTask3">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerTask3">
    <children>
       <TextField fx:id="tfPhi" layoutX="50.0" layoutY="38.0" prefHeight="24.0" prefWidth="60.0" />
       <Button fx:id="btBackToMainMenu" focusTraversable="false" mnemonicParsing="false" onAction="#backToMainMenuButtonPressed" opacity="0.7" text="BACK">
@@ -48,14 +48,20 @@
             <Insets />
          </opaqueInsets>
       </Label>
-      <Label layoutX="27.0" layoutY="98.0" text="A2AxisAngle:">
+      <Label layoutX="27.0" layoutY="108.0" text="A2AxisAngle:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="154.0" layoutY="100.0" text="p:" />
-      <TextField fx:id="tfP" editable="false" focusTraversable="false" layoutX="170.0" layoutY="96.0" prefHeight="24.0" prefWidth="200.0" />
-      <Label layoutX="410.0" layoutY="100.0" text="angle:" />
-      <TextField fx:id="tfAngle" editable="false" focusTraversable="false" layoutX="451.0" layoutY="96.0" prefHeight="24.0" prefWidth="220.0" />
+      <Label layoutX="154.0" layoutY="110.0" text="p:" />
+      <TextField fx:id="tfP" editable="false" focusTraversable="false" layoutX="170.0" layoutY="106.0" prefHeight="24.0" prefWidth="200.0" />
+      <Label layoutX="410.0" layoutY="110.0" text="angle:" />
+      <TextField fx:id="tfAngle" editable="false" focusTraversable="false" layoutX="451.0" layoutY="106.0" prefHeight="24.0" prefWidth="220.0" />
+      <Label fx:id="lbQuaternion" layoutX="133.0" layoutY="200.0" text="Quaternion q:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfQuaternion" layoutX="244.0" layoutY="198.0" prefHeight="24.0" prefWidth="374.0" />
    </children>
 </AnchorPane>

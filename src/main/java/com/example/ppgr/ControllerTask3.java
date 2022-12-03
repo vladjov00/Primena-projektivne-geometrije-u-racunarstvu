@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -13,10 +14,17 @@ import java.io.IOException;
 
 public class ControllerTask3 extends ButtonAction {
 
-    public TextField tfPhi, tfTheta, tfPsi, tfP, tfAngle;
+    public AnchorPane window;
+    public TextField tfPhi, tfTheta, tfPsi, tfP, tfAngle, tfQuaternion;
     public TextArea taRotationMatrix;
     public Button btFindRotationMatrix;
     public Label lbInvalidInput;
+
+    public void initialize() {
+        Arrow arrow1 = new Arrow(260, 140, 310, 180, 15);
+        Arrow arrow2 = new Arrow(550, 140, 500, 180, 15);
+        window.getChildren().addAll(arrow1, arrow2);
+    }
 
     public void backToMainMenuButtonPressed(ActionEvent e) throws IOException {
         backToMainMenu((Stage) ((Node) e.getSource()).getScene().getWindow());
@@ -47,6 +55,9 @@ public class ControllerTask3 extends ButtonAction {
             System.out.println("φ: " + angles.getX() + ", u stepenima: " + String.format("%.3f", (angles.getX() * 180) / (Math.PI)) + "°");
             System.out.println("θ: " + angles.getY() + ", u stepenima: " + String.format("%.3f", (angles.getY() * 180) / (Math.PI)) + "°");
             System.out.println("ψ: " + angles.getZ() + ", u stepenima: " + String.format("%.3f", (angles.getZ() * 180) / (Math.PI)) + "°");
+
+            Quaternion q = AxisAngle2Q(p, angle);
+            tfQuaternion.setText(q.toString());
         }
         catch (NumberFormatException e) {
             lbInvalidInput.setVisible(true);
@@ -54,10 +65,10 @@ public class ControllerTask3 extends ButtonAction {
     }
 
     private Matrix.Matrix3x3 euler2A(double phi, double theta, double psi) {
-//        phi = -Math.atan(0.25);
-//        theta = -Math.asin(8/9.0);
-//        psi = Math.atan(4);
-//        System.out.println("phi: " + phi + ", theta: " + theta + ", psi: " + psi);
+        phi = -Math.atan(0.25);
+        theta = -Math.asin(8/9.0);
+        psi = Math.atan(4);
+        System.out.println("phi: " + phi + ", theta: " + theta + ", psi: " + psi);
 
         double cosPhi = Math.cos(phi);
         double sinPhi = Math.sin(phi);
@@ -146,4 +157,15 @@ public class ControllerTask3 extends ButtonAction {
         return new Vector(phi, theta, psi);
     }
 
+    private Quaternion AxisAngle2Q(Vector p, double phi) {
+        double w = Math.cos(phi/2);
+        p = p.norm();
+
+        Vector xyz = p.multiplyBy(Math.sin(phi/2)); // (x, y, z) = sin(φ/2) * (px, py, pz);
+        double x = xyz.getX();
+        double y = xyz.getY();
+        double z = xyz.getZ();
+
+        return new Quaternion(x, y, z, w);
+    }
 }
