@@ -37,27 +37,39 @@ public class ControllerTask3 extends ButtonAction {
             double theta = Double.parseDouble(tfTheta.getText());
             double psi = Double.parseDouble(tfPsi.getText());
 
-            Matrix.Matrix3x3 A = euler2A(phi, theta, psi);
+            Matrix.Matrix3x3 A = euler2A(phi, theta, psi);              // 1. Euler2A(φ,θ,ψ) -> A
             taRotationMatrix.setText(A.toString());
 
-            Pair<Vector, Double> a = A2AxisAngle(A);
-            Vector p = a.getKey();
-            double angle = a.getValue();
+            Pair<Vector, Double> pair = A2AxisAngle(A);                 // 2. A2AxisAngle(A) -> p, Φ
+            Vector p = pair.getKey();
+            double angle = pair.getValue();
 
             tfP.setText(p.toString());
             tfAngle.setText(String.format("%.6f", (angle * 180) / (Math.PI)) + "° = PI*" + String.format("%.6f", angle/ Math.PI));
 
             System.out.println("Rezultat dobijen formulom rodrigeza za p" + p + " i ugao " + String.format("%.6f", (angle * 180) / (Math.PI)) + "°:");
-            System.out.println(rodriguez(p, angle));
+            System.out.println(rodriguez(p, angle));                    // 3. Rodriguez(p, Φ) -> A
+            System.out.println("---------------------------------------------------------------");
 
             System.out.println("Uglovi dobijeni primenjivanjem funkcije A2Euler na matricu A:");
-            Vector angles = A2Euler(A);
+            Vector angles = A2Euler(A);                                 // 4. A2Euler(A) -> φ, θ, ψ
             System.out.println("φ: " + angles.getX() + ", u stepenima: " + String.format("%.3f", (angles.getX() * 180) / (Math.PI)) + "°");
             System.out.println("θ: " + angles.getY() + ", u stepenima: " + String.format("%.3f", (angles.getY() * 180) / (Math.PI)) + "°");
             System.out.println("ψ: " + angles.getZ() + ", u stepenima: " + String.format("%.3f", (angles.getZ() * 180) / (Math.PI)) + "°");
+            System.out.println("---------------------------------------------------------------");
 
-            Quaternion q = AxisAngle2Q(p, angle);
+            Quaternion q = AxisAngle2Q(p, angle);                       // 5. AxisAngle2Q(p, Φ) -> q
             tfQuaternion.setText(q.toString());
+
+            Pair<Vector, Double> pairQ = Q2AxisAngle(q);                // 6. Q2AxisAngle(q) -> p, Φ
+            Vector pQ = pairQ.getKey();
+            double angleQ = pairQ.getValue();
+            System.out.println("q = " + q);
+            System.out.println("Osa rotacije dobijena iz kvaterniona q:");
+            System.out.println("p = " + pQ);
+            System.out.println("Ugao rotacije dobijen iz kvaterniona q:");
+            System.out.println(String.format("%.5f", angleQ) + ", u stepenima: " + String.format("%.3f", (angleQ * 180) / (Math.PI)) + "°");
+            System.out.println("---------------------------------------------------------------");
         }
         catch (NumberFormatException e) {
             lbInvalidInput.setVisible(true);
@@ -65,10 +77,13 @@ public class ControllerTask3 extends ButtonAction {
     }
 
     private Matrix.Matrix3x3 euler2A(double phi, double theta, double psi) {
-        phi = -Math.atan(0.25);
-        theta = -Math.asin(8/9.0);
-        psi = Math.atan(4);
+        // Test primer:
+//        phi = -Math.atan(0.25);
+//        theta = -Math.asin(8/9.0);
+//        psi = Math.atan(4);
+
         System.out.println("phi: " + phi + ", theta: " + theta + ", psi: " + psi);
+        System.out.println("---------------------------------------------------------------");
 
         double cosPhi = Math.cos(phi);
         double sinPhi = Math.sin(phi);
@@ -81,7 +96,7 @@ public class ControllerTask3 extends ButtonAction {
         Matrix.Matrix3x3 Ry = new Matrix.Matrix3x3(cosTheta, 0, sinTheta, 0, 1, 0, -sinTheta, 0, cosTheta);
         Matrix.Matrix3x3 Rz = new Matrix.Matrix3x3(cosPsi, -sinPsi, 0, sinPsi, cosPsi, 0, 0, 0, 1);
 
-        return Matrix.multiply(Rz, Matrix.multiply(Ry, Rx));
+        return Matrix.multiply(Rz, Matrix.multiply(Ry, Rx));        // Rz(ψ)∘Ry(θ)∘Rx(φ)
     }
 
     private Pair<Vector, Double> A2AxisAngle(Matrix.Matrix3x3 A) {
@@ -91,24 +106,24 @@ public class ControllerTask3 extends ButtonAction {
         Vector n2 = Matrix.transpose(B).getV2();    // druga vrsta matrice A - E
         Vector n3 = Matrix.transpose(B).getV3();    // treca vrsta matrice A - E
 
-        Vector p = n1.cross(n2);    // vektor p = n1 x n2
-        if(p.isZeroVector())        // ako su n1 i n2 linearno zavisni
-            p = n1.cross(n3);       // tada je p = n1 x n3
+        Vector p = n1.cross(n2);                    // vektor p = n1 x n2
+        if(p.isZeroVector())                        // ako su n1 i n2 linearno zavisni
+            p = n1.cross(n3);                       // tada je p = n1 x n3
 
-        p = p.norm();               // normiramo vektor p
+        p = p.normalize();                          // normiramo vektor p
 
-        Vector x = n1.norm();           // jedinicni vektor normalan na p
-        Vector xp = A.multiplyBy(x);    // vektor dobijen primenom izometrije A na x
+        Vector x = n1.normalize();                  // jedinicni vektor normalan na p
+        Vector xp = A.multiplyBy(x);                // vektor dobijen primenom izometrije A na x
 
-        double angleCos = x.scalar(xp);     // kosinus ugla rotacije dobijamo skalarnim proizvodom x i xp
-        double angle = Math.acos(angleCos); // ugao je arccos prethodne vrednosti
+        double angleCos = x.scalar(xp);             // kosinus ugla rotacije dobijamo skalarnim proizvodom x i xp
+        double angle = Math.acos(angleCos);         // ugao je arccos prethodne vrednosti
 
         double mixedProduct = x.cross(xp).scalar(p); // mesoviti proizvod [x, xp, p]
 
-        if(mixedProduct < 0)                // ako je mesoviti proizvod < 0
-            p = p.multiplyBy(-1);     // p = -p
+        if(mixedProduct < 0)                        // ako je mesoviti proizvod < 0
+            p = p.multiplyBy(-1);             // p = -p
 
-        return new Pair<>(p, angle);
+        return new Pair<>(p, angle);                // p, Φ
     }
 
     private Matrix.Matrix3x3 rodriguez(Vector p, double phi) {
@@ -121,7 +136,6 @@ public class ControllerTask3 extends ButtonAction {
         double cosPhi = Math.cos(phi);
         double sinPhi = Math.sin(phi);
 
-
         Matrix.Matrix3x3 R = Matrix.identity3();        //  R = E
         R = R.multiplyBy(cosPhi);                       //  R = cosPhi * E
         R = R.add(ppt.multiplyBy(1 - cosPhi));    //  R = (1 - cosPhi)*ppt + cosPhi * E
@@ -132,13 +146,13 @@ public class ControllerTask3 extends ButtonAction {
 
     private Vector A2Euler(Matrix.Matrix3x3 A) {
         double phi, theta, psi;
-        double a31 = A.getV1().getZ();
-        double a21 = A.getV1().getY();
         double a11 = A.getV1().getX();
+        double a12 = A.getV2().getX();
+        double a21 = A.getV1().getY();
+        double a22 = A.getV2().getY();
+        double a31 = A.getV1().getZ();
         double a32 = A.getV2().getZ();
         double a33 = A.getV3().getZ();
-        double a12 = A.getV2().getX();
-        double a22 = A.getV2().getY();
         if(a31 < 1){
             if(a31 > -1) {
                 psi = Math.atan2(a21, a11);
@@ -154,18 +168,37 @@ public class ControllerTask3 extends ButtonAction {
             theta = -Math.PI / 2;
             phi = 0;
         }
-        return new Vector(phi, theta, psi);
+        return new Vector(phi, theta, psi);     // φ, θ, ψ
     }
 
     private Quaternion AxisAngle2Q(Vector p, double phi) {
         double w = Math.cos(phi/2);
-        p = p.norm();
+        p = p.normalize();
 
         Vector xyz = p.multiplyBy(Math.sin(phi/2)); // (x, y, z) = sin(φ/2) * (px, py, pz);
         double x = xyz.getX();
         double y = xyz.getY();
         double z = xyz.getZ();
 
-        return new Quaternion(x, y, z, w);
+        return new Quaternion(x, y, z, w);          // q = x*i + y*j + k*z + w
+    }
+
+    private Pair<Vector, Double> Q2AxisAngle(Quaternion q) {
+        if(q.getW() < 0) {
+            q = q.multiplyBy(-1);
+        }
+        double w = q.getW();
+
+        double angle = 2 * Math.acos(w);        // Φ = 2arccos(w)
+        Vector p;
+
+        double EPS = 0.001;
+        if(Math.abs(w - 1) < EPS) {             // ako je w = 1
+            p = new Vector(1,0,0);     // uzimamo bilo koji jedinicni vektor, npr (1,0,0)
+        } else {
+            p = q.getP().normalize();
+        }
+
+        return new Pair<>(p, angle);            // p, Φ
     }
 }

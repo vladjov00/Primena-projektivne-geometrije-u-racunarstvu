@@ -60,7 +60,7 @@ public class Vector {
 
     public Vector multiplyBy(double scalar) { return new Vector(x*scalar, y*scalar, z*scalar); }
 
-    public Vector norm() { return this.divideBy(Math.sqrt(x*x + y*y + z*z)); }
+    public Vector normalize() { return this.divideBy(Math.sqrt(x*x + y*y + z*z)); }
 
     public boolean isZeroVector() {
         double EPS = 0.0001;
