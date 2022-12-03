@@ -37,7 +37,16 @@ public class ControllerTask3 extends ButtonAction {
             double angle = a.getValue();
 
             tfP.setText(p.toString());
-            tfAngle.setText(String.format("%.6f", (angle * 360) / (2*Math.PI)) + "° = PI*" + String.format("%.6f", angle/ Math.PI));
+            tfAngle.setText(String.format("%.6f", (angle * 180) / (Math.PI)) + "° = PI*" + String.format("%.6f", angle/ Math.PI));
+
+            System.out.println("Rezultat dobijen formulom rodrigeza za p" + p + " i ugao " + String.format("%.6f", (angle * 180) / (Math.PI)) + "°:");
+            System.out.println(rodriguez(p, angle));
+
+            System.out.println("Uglovi dobijeni primenjivanjem funkcije A2Euler na matricu A:");
+            Vector angles = A2Euler(A);
+            System.out.println("φ: " + angles.getX() + ", u stepenima: " + String.format("%.3f", (angles.getX() * 180) / (Math.PI)) + "°");
+            System.out.println("θ: " + angles.getY() + ", u stepenima: " + String.format("%.3f", (angles.getY() * 180) / (Math.PI)) + "°");
+            System.out.println("ψ: " + angles.getZ() + ", u stepenima: " + String.format("%.3f", (angles.getZ() * 180) / (Math.PI)) + "°");
         }
         catch (NumberFormatException e) {
             lbInvalidInput.setVisible(true);
@@ -90,4 +99,51 @@ public class ControllerTask3 extends ButtonAction {
 
         return new Pair<>(p, angle);
     }
+
+    private Matrix.Matrix3x3 rodriguez(Vector p, double phi) {
+        double p1 = p.getX();
+        double p2 = p.getY();
+        double p3 = p.getZ();
+        Matrix.Matrix3x3 px = new Matrix.Matrix3x3(0, -p3, p2, p3, 0, -p1, -p2, p1, 0);
+        Matrix.Matrix3x3 ppt = Matrix.multiplyVectors(p, p);
+
+        double cosPhi = Math.cos(phi);
+        double sinPhi = Math.sin(phi);
+
+
+        Matrix.Matrix3x3 R = Matrix.identity3();        //  R = E
+        R = R.multiplyBy(cosPhi);                       //  R = cosPhi * E
+        R = R.add(ppt.multiplyBy(1 - cosPhi));    //  R = (1 - cosPhi)*ppt + cosPhi * E
+        R = R.add(px.multiplyBy(sinPhi));               //  R = (1 - cosPhi)*ppt + cosPhi * E + sinPhi * px
+
+        return R;
+    }
+
+    private Vector A2Euler(Matrix.Matrix3x3 A) {
+        double phi, theta, psi;
+        double a31 = A.getV1().getZ();
+        double a21 = A.getV1().getY();
+        double a11 = A.getV1().getX();
+        double a32 = A.getV2().getZ();
+        double a33 = A.getV3().getZ();
+        double a12 = A.getV2().getX();
+        double a22 = A.getV2().getY();
+        if(a31 < 1){
+            if(a31 > -1) {
+                psi = Math.atan2(a21, a11);
+                theta = Math.asin(-a31);
+                phi = Math.atan2(a32, a33);
+            } else {
+                psi = Math.atan2(-a12, a22);
+                theta = Math.PI / 2;
+                phi = 0;
+            }
+        } else {
+            psi = Math.atan2(-a12, a22);
+            theta = -Math.PI / 2;
+            phi = 0;
+        }
+        return new Vector(phi, theta, psi);
+    }
+
 }

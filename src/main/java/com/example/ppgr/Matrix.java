@@ -99,7 +99,7 @@ public class Matrix {
         }
 
         public Matrix3x3 add(Matrix3x3 A) {
-            return new Matrix3x3(v1.add(A.getV1()), v2.add(A.getV2()), v2.add(A.getV2()));
+            return new Matrix3x3(v1.add(A.getV1()), v2.add(A.getV2()), v3.add(A.getV3()));
         }
 
         public Matrix3x3 subtract(Matrix3x3 A) {
@@ -195,5 +195,9 @@ public class Matrix {
             return null;
         }
 
+    }
+
+    public static Matrix.Matrix3x3 multiplyVectors(Vector v1, Vector v2) {
+        return new Matrix3x3(v1.multiplyBy(v2.getX()), v1.multiplyBy(v2.getY()), v1.multiplyBy(v2.getZ()));
     }
 }
