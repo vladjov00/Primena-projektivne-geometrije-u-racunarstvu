@@ -2,10 +2,7 @@ package com.example.ppgr;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -19,10 +16,11 @@ public class ControllerTask3 extends ButtonAction {
     public TextArea taRotationMatrix;
     public Button btFindRotationMatrix;
     public Label lbInvalidInput;
+    public RadioButton rbRadians, rbDegrees;
 
     public void initialize() {
-        Arrow arrow1 = new Arrow(260, 140, 310, 180, 15);
-        Arrow arrow2 = new Arrow(550, 140, 500, 180, 15);
+        Arrow arrow1 = new Arrow(260, 305, 310, 345, 15);
+        Arrow arrow2 = new Arrow(550, 305, 500, 345, 15);
         window.getChildren().addAll(arrow1, arrow2);
     }
 
@@ -36,6 +34,12 @@ public class ControllerTask3 extends ButtonAction {
             double phi = Double.parseDouble(tfPhi.getText());
             double theta = Double.parseDouble(tfTheta.getText());
             double psi = Double.parseDouble(tfPsi.getText());
+
+            if(rbDegrees.isSelected()) {                                 // pretvaranje uglova u radijane
+                phi *= Math.PI / 180;
+                theta *= Math.PI / 180;
+                psi *= Math.PI / 180;
+            }
 
             Matrix.Matrix3x3 A = euler2A(phi, theta, psi);              // 1. Euler2A(φ,θ,ψ) -> A
             taRotationMatrix.setText(A.toString());
@@ -77,11 +81,6 @@ public class ControllerTask3 extends ButtonAction {
     }
 
     private Matrix.Matrix3x3 euler2A(double phi, double theta, double psi) {
-        // Test primer:
-//        phi = -Math.atan(0.25);
-//        theta = -Math.asin(8/9.0);
-//        psi = Math.atan(4);
-
         System.out.println("phi: " + phi + ", theta: " + theta + ", psi: " + psi);
         System.out.println("---------------------------------------------------------------");
 
@@ -200,5 +199,68 @@ public class ControllerTask3 extends ButtonAction {
         }
 
         return new Pair<>(p, angle);            // p, Φ
+    }
+
+    public void Deg2Rad() {     // pretvara uglove date u stepenima u radijane
+        try {
+            double phi = Double.parseDouble(tfPhi.getText());
+            double theta = Double.parseDouble(tfTheta.getText());
+            double psi = Double.parseDouble(tfPsi.getText());
+
+            phi *= Math.PI / 180;
+            theta *= Math.PI / 180;
+            psi *= Math.PI / 180;
+
+            tfPhi.setText(String.valueOf(phi));
+            tfTheta.setText(String.valueOf(theta));
+            tfPsi.setText(String.valueOf(psi));
+        }
+        catch (NumberFormatException ignored) {}
+    }
+
+    public void Rad2Deg() {     // pretvara uglove date u radijanima u stepene
+        try {
+            double phi = Double.parseDouble(tfPhi.getText());
+            double theta = Double.parseDouble(tfTheta.getText());
+            double psi = Double.parseDouble(tfPsi.getText());
+
+            phi *= 180 / Math.PI;
+            theta *= 180 / Math.PI;
+            psi *= 180 / Math.PI;
+
+            tfPhi.setText(String.valueOf(phi));
+            tfTheta.setText(String.valueOf(theta));
+            tfPsi.setText(String.valueOf(psi));
+        }
+        catch (NumberFormatException ignored) {}
+    }
+
+    public void loadTest1() {   // test primer 1 - onaj koji je koriscen u fazi razvoja
+        double phi = -Math.atan(0.25);
+        double theta = -Math.asin(8/9.0);
+        double psi = Math.atan(4);
+
+        tfPhi.setText(String.valueOf(phi));
+        tfTheta.setText(String.valueOf(theta));
+        tfPsi.setText(String.valueOf(psi));
+
+        if(rbDegrees.isSelected()) {
+            Rad2Deg();
+        }
+    }
+
+    public void loadTest2() {   // test primer 2 - prema formuli za broj indeksa n = 96
+        int n = 96;
+        double phi = (1/3.0)*Math.PI * (n % 5 + 1);
+        double theta = (Math.PI / 17) * (n % 8 + 1);
+        double psi = (Math.PI / 4) * (n % 7 + 1);
+
+        tfPhi.setText(String.valueOf(phi));
+        tfTheta.setText(String.valueOf(theta));
+        tfPsi.setText(String.valueOf(psi));
+
+        if(rbDegrees.isSelected()) {
+            Rad2Deg();
+        }
     }
 }

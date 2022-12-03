@@ -4,14 +4,16 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ppgr.ControllerTask3">
    <children>
-      <TextField fx:id="tfPhi" layoutX="50.0" layoutY="39.0" prefHeight="24.0" prefWidth="60.0" />
+      <TextField fx:id="tfPhi" layoutX="50.0" layoutY="107.0" prefHeight="24.0" prefWidth="179.0" />
       <Button fx:id="btBackToMainMenu" focusTraversable="false" mnemonicParsing="false" onAction="#backToMainMenuButtonPressed" opacity="0.7" text="BACK">
          <font>
             <Font size="12.0" />
@@ -20,27 +22,27 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label fx:id="lbPhi" focusTraversable="false" layoutX="25.0" layoutY="39.0" text="φ:">
+      <Label fx:id="lbPhi" focusTraversable="false" layoutX="25.0" layoutY="107.0" text="φ:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="tfTheta" layoutX="160.0" layoutY="39.0" prefHeight="24.0" prefWidth="60.0" />
-      <Label fx:id="lbTheta" focusTraversable="false" layoutX="135.0" layoutY="39.0" text="θ:">
+      <TextField fx:id="tfTheta" layoutX="50.0" layoutY="147.0" prefHeight="24.0" prefWidth="179.0" />
+      <Label fx:id="lbTheta" focusTraversable="false" layoutX="25.0" layoutY="147.0" text="θ:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="tfPsi" layoutX="275.0" layoutY="39.0" prefHeight="24.0" prefWidth="60.0" />
-      <Label fx:id="lbPsi" focusTraversable="false" layoutX="245.0" layoutY="39.0" text="ψ:">
+      <TextField fx:id="tfPsi" layoutX="50.0" layoutY="187.0" prefHeight="24.0" prefWidth="179.0" />
+      <Label fx:id="lbPsi" focusTraversable="false" layoutX="25.0" layoutY="187.0" text="ψ:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="btFindRotationMatrix" layoutX="380.0" layoutY="31.0" mnemonicParsing="false" onAction="#findRotationMatrixButtonPressed" prefHeight="41.0" prefWidth="150.0" text="Find Rotation Matrix" />
-      <TextArea fx:id="taRotationMatrix" editable="false" focusTraversable="false" layoutX="652.0" layoutY="14.0" prefHeight="75.0" prefWidth="200.0" promptText="RESULT" />
-      <Label fx:id="lbInvalidInput" focusTraversable="false" layoutX="364.0" layoutY="75.0" text="Invalid input !" textFill="RED" visible="false" />
-      <Label focusTraversable="false" layoutX="592.0" layoutY="34.0" text="A =">
+      <Button fx:id="btFindRotationMatrix" layoutX="301.0" layoutY="137.0" mnemonicParsing="false" onAction="#findRotationMatrixButtonPressed" prefHeight="41.0" prefWidth="150.0" text="Find Rotation Matrix" />
+      <TextArea fx:id="taRotationMatrix" editable="false" focusTraversable="false" layoutX="587.0" layoutY="120.0" prefHeight="75.0" prefWidth="200.0" promptText="RESULT" />
+      <Label fx:id="lbInvalidInput" focusTraversable="false" layoutX="301.0" layoutY="187.0" text="Invalid input !" textFill="RED" visible="false" />
+      <Label focusTraversable="false" layoutX="527.0" layoutY="140.0" text="A =">
          <font>
             <Font size="28.0" />
          </font>
@@ -48,20 +50,28 @@
             <Insets />
          </opaqueInsets>
       </Label>
-      <Label layoutX="27.0" layoutY="109.0" text="A2AxisAngle:">
+      <Label focusTraversable="false" layoutX="27.0" layoutY="270.0" text="A2AxisAngle:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="154.0" layoutY="111.0" text="p:" />
-      <TextField fx:id="tfP" editable="false" focusTraversable="false" layoutX="170.0" layoutY="107.0" prefHeight="24.0" prefWidth="200.0" />
-      <Label layoutX="410.0" layoutY="111.0" text="angle:" />
-      <TextField fx:id="tfAngle" editable="false" focusTraversable="false" layoutX="451.0" layoutY="107.0" prefHeight="24.0" prefWidth="220.0" />
-      <Label fx:id="lbQuaternion" layoutX="133.0" layoutY="201.0" text="Quaternion q:">
+      <Label focusTraversable="false" layoutX="154.0" layoutY="272.0" text="p:" />
+      <TextField fx:id="tfP" editable="false" focusTraversable="false" layoutX="170.0" layoutY="268.0" prefHeight="24.0" prefWidth="200.0" />
+      <Label focusTraversable="false" layoutX="410.0" layoutY="272.0" text="angle:" />
+      <TextField fx:id="tfAngle" editable="false" focusTraversable="false" layoutX="451.0" layoutY="268.0" prefHeight="24.0" prefWidth="220.0" />
+      <Label fx:id="lbQuaternion" focusTraversable="false" layoutX="133.0" layoutY="362.0" text="Quaternion q:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="tfQuaternion" layoutX="244.0" layoutY="199.0" prefHeight="24.0" prefWidth="374.0" />
+      <TextField fx:id="tfQuaternion" editable="false" focusTraversable="false" layoutX="244.0" layoutY="360.0" prefHeight="24.0" prefWidth="374.0" />
+      <RadioButton fx:id="rbRadians" focusTraversable="false" layoutX="149.0" layoutY="64.0" mnemonicParsing="false" onAction="#Deg2Rad" text="Radians">
+         <toggleGroup>
+            <ToggleGroup fx:id="tgRadDeg" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="rbDegrees" focusTraversable="false" layoutX="25.0" layoutY="64.0" mnemonicParsing="false" onAction="#Rad2Deg" selected="true" text="Degrees" toggleGroup="$tgRadDeg" />
+      <Button fx:id="btTest1" focusTraversable="false" layoutX="301.0" layoutY="61.0" mnemonicParsing="false" onAction="#loadTest1" text="Test 1" />
+      <Button fx:id="btTest2" focusTraversable="false" layoutX="388.0" layoutY="61.0" mnemonicParsing="false" onAction="#loadTest2" text="Test 2" />
    </children>
 </AnchorPane>
