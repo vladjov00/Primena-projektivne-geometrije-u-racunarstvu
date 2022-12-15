@@ -16,7 +16,7 @@ public class ControllerMainMenu {
     public Button btImagePrev;
     public Button btImageNext;
     public ToggleGroup tgChooseScene;
-    public RadioButton rbSelect1, rbSelect2, rbSelect3;
+    public RadioButton rbSelect1, rbSelect2, rbSelect3, rbSelect4;
     public Label lbImageNotFound;
 
     public void initialize() {
@@ -30,6 +30,9 @@ public class ControllerMainMenu {
 
         rbSelect3.setUserData(new Task("scene3.fxml", "3. Izometrije", "task3.txt",
                 Arrays.asList("task3preview1euler.gif", "task3preview2slerp.gif")));
+
+        rbSelect4.setUserData(new Task("scene4.fxml", "4. Matrica kamere", "task4.txt",
+                Arrays.asList("task4preview1.jpg")));
     }
 
     private void setImage(String fName) {
