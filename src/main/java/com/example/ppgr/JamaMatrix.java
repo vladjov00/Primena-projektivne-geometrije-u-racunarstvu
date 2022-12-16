@@ -126,6 +126,7 @@ public class JamaMatrix implements Cloneable, java.io.Serializable {
         this.A = A;
     }
 
+
     /** Construct a JamaMatrix quickly without checking arguments.
      @param A    Two-dimensional array of doubles.
      @param m    Number of rows.

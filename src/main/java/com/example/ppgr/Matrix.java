@@ -41,6 +41,15 @@ public class Matrix {
             this.v3 = new Vector(elements[2], elements[5], elements[8]);
         }
 
+        public Matrix3x3(JamaMatrix M) throws Exception {
+            if(M.getRowDimension() != 3 || M.getColumnDimension() != 3) {
+                throw new Exception("ERROR::CONSTRUCTOR::Matrix3x3(JamaMatrix M) Matrix must be 3x3!");
+            }
+            this.v1 = new Vector(M.get(0, 0), M.get(1, 0), M.get(2, 0));
+            this.v2 = new Vector(M.get(0, 1), M.get(1, 1), M.get(2, 1));
+            this.v3 = new Vector(M.get(0, 2), M.get(1, 2), M.get(2, 2));
+        }
+
         public Vector getV1() {
             return v1;
         }
@@ -145,7 +154,7 @@ public class Matrix {
             throw new Exception("Determinant equals 0!");
         }
 
-        return adj; // for the purposes of task2 there is no need to multiply by 1/det
+        return adj.multiplyBy(1/det); // for the purposes of task2 there is no need to multiply by 1/det
     }
 
     public static Matrix3x3 cofactors(Matrix3x3 M) {
