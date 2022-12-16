@@ -1,8 +1,8 @@
 package com.example.ppgr;
 
 public class Quaternion {
-    private Vector p;
-    private double w;
+    private final Vector p;
+    private final double w;
 
     public Quaternion(Vector p, double w) {
         this.p = p;

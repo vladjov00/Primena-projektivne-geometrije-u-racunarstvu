@@ -67,3 +67,4 @@ public class Vector {
         return Math.abs(x) < EPS && Math.abs(y) < EPS && Math.abs(z) < EPS;
     }
 }
+

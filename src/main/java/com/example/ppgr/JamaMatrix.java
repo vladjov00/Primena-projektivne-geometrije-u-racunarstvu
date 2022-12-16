@@ -790,14 +790,14 @@ public class JamaMatrix implements Cloneable, java.io.Serializable {
 //        return new CholeskyDecomposition(this);
 //    }
 //
-//    /** Singular Value Decomposition
-//     @return     SingularValueDecomposition
-//     @see SingularValueDecomposition
-//     */
-//
-//    public SingularValueDecomposition svd () {
-//        return new SingularValueDecomposition(this);
-//    }
+    /** Singular Value Decomposition
+     @return     SingularValueDecomposition
+     @see SVDecomposition
+     */
+
+    public SVDecomposition svd () {
+        return new SVDecomposition(this);
+    }
 //
 //    /** Eigenvalue Decomposition
 //     @return     EigenvalueDecomposition
@@ -843,33 +843,33 @@ public class JamaMatrix implements Cloneable, java.io.Serializable {
 //        return new LUDecomposition(this).det();
 //    }
 //
-//    /** JamaMatrix rank
-//     @return     effective numerical rank, obtained from SVD.
-//     */
-//
-//    public int rank () {
-//        return new SingularValueDecomposition(this).rank();
-//    }
-//
-//    /** JamaMatrix condition (2 norm)
-//     @return     ratio of largest to smallest singular value.
-//     */
-//
-//    public double cond () {
-//        return new SingularValueDecomposition(this).cond();
-//    }
-//
-//    /** JamaMatrix trace.
-//     @return     sum of the diagonal elements.
-//     */
-//
-//    public double trace () {
-//        double t = 0;
-//        for (int i = 0; i < Math.min(m,n); i++) {
-//            t += A[i][i];
-//        }
-//        return t;
-//    }
+    /** JamaMatrix rank
+     @return     effective numerical rank, obtained from SVD.
+     */
+
+    public int rank () {
+        return new SVDecomposition(this).rank();
+    }
+
+    /** JamaMatrix condition (2 norm)
+     @return     ratio of largest to smallest singular value.
+     */
+
+    public double cond () {
+        return new SVDecomposition(this).cond();
+    }
+
+    /** JamaMatrix trace.
+     @return     sum of the diagonal elements.
+     */
+
+    public double trace () {
+        double t = 0;
+        for (int i = 0; i < Math.min(m,n); i++) {
+            t += A[i][i];
+        }
+        return t;
+    }
 
     /** Generate JamaMatrix with random elements
      @param m    Number of rows.
