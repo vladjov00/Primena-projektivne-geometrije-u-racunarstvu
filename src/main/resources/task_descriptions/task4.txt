@@ -1,1 +1,3 @@
-zadatak 4: matrica kamere
+Racunanje parametara kamere na osnovu 3x4 matrice kamere.
+Racunanje 3x4 matrice kamere na osnovu koordinata 6 tacaka u prostoru i njihovih 6
+odgovarajucih koordinata u projektivnoj ravni, tj. na ekranu.

@@ -32,7 +32,7 @@ public class ControllerMainMenu {
                 Arrays.asList("task3preview1euler.gif", "task3preview2slerp.gif")));
 
         rbSelect4.setUserData(new Task("scene4.fxml", "4. Matrica kamere", "task4.txt",
-                Arrays.asList("task4preview1.jpg")));
+                Arrays.asList("task4preview1.jpg", "task4preview2.jpg")));
     }
 
     private void setImage(String fName) {

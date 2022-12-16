@@ -763,14 +763,14 @@ public class JamaMatrix implements Cloneable, java.io.Serializable {
         return X;
     }
 
-//    /** LU Decomposition
-//     @return     LUDecomposition
-//     @see LUDecomposition
-//     */
-//
-//    public LUDecomposition lu () {
-//        return new LUDecomposition(this);
-//    }
+    /** LU Decomposition
+     @return     LUDecomposition
+     @see LUDecomposition
+     */
+
+    public LUDecomposition lu () {
+        return new LUDecomposition(this);
+    }
 
     /** QR Decomposition
      @return     QRDecomposition
@@ -835,14 +835,14 @@ public class JamaMatrix implements Cloneable, java.io.Serializable {
 //        return solve(identity(m,m));
 //    }
 //
-//    /** JamaMatrix determinant
-//     @return     determinant
-//     */
-//
-//    public double det () {
-//        return new LUDecomposition(this).det();
-//    }
-//
+    /** JamaMatrix determinant
+     @return     determinant
+     */
+
+    public double det () {
+        return new LUDecomposition(this).det();
+    }
+
     /** JamaMatrix rank
      @return     effective numerical rank, obtained from SVD.
      */

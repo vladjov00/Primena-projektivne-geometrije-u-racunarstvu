@@ -113,27 +113,36 @@ public class ControllerTask4 extends ButtonAction {
             throw new Exception("Matrix must be 3x4!");
         }
 
-        var jamaT0 = T.getJamaMatrix(0, 2, 0, 2);
+        var jamaT0 = T.getJamaMatrix(0, 2, 0, 2);           // iz matrice T koja je 3x4, izdvajamo 3x3 matricu T0
 
-        Matrix.Matrix3x3 T0 = new Matrix.Matrix3x3(jamaT0);
-        Vector v4 = new Vector(T.get(0,3), T.get(1,3), T.get(2, 3));
+        Matrix.Matrix3x3 T0 = new Matrix.Matrix3x3(jamaT0);              // konvertovanje u matricu iz moje biblioteke
+        T0 = T0.multiplyBy(-1);
+        Vector v4 = new Vector(T.get(0,3), T.get(1,3), T.get(2, 3));    // preostali vektor iz matrice T, tj vektor 4. kolone
 
-        Matrix.Matrix3x3 T0inv = Matrix.inverse(T0);
-        Vector C = T0inv.multiplyBy(v4);
+        Matrix.Matrix3x3 T0inv = Matrix.inverse(T0);                    // posto je -T0*C = v4
+        Vector C = T0inv.multiplyBy(v4);                                // C nalazimo kao T0^-1 * v4
 
         var jamaT0inv = new JamaMatrix(T0inv.getElementsAsArray(), 3);
+        QRDecomposition QR = new QRDecomposition(jamaT0inv);            // radimo QR dekompoziciju inverza matrice T0
+        var jamaQ = QR.getQ();                                          // izvlacimo Q iz rezultata
+        var jamaR = QR.getR();                                          // izvlacimo R iz rezultata
 
-        QRDecomposition QR = new QRDecomposition(jamaT0inv);
-        var jamaQ = QR.getQ();
-        var jamaR = QR.getR();
+        for(int i = 0; i < 3; i++) {                                    // proveravamo da li je neki od
+            if(jamaR.get(i, i) < 0) {                                   // elemenata na dijagonali matrice R negativan
+                for(int j = 0; j < 3; j++) {                            // ako jeste,
+                    jamaR.set(i, j, -jamaR.get(i, j));                  // menjamo znak elementima odgovarajuce vrste matrice R
+                    jamaQ.set(j, i, -jamaQ.get(j, i));                  // menjamo znak elementima odgovarajuce kolone matrice Q
+                }
+            }
+        }
 
-        Matrix.Matrix3x3 Q = new Matrix.Matrix3x3(jamaQ);
+        Matrix.Matrix3x3 Q = new Matrix.Matrix3x3(jamaQ);               // konvertovanje u matrice iz moje biblioteke
         Matrix.Matrix3x3 R = new Matrix.Matrix3x3(jamaR);
 
-        Matrix.Matrix3x3 K = Matrix.inverse(R);
-        Matrix.Matrix3x3 A = Matrix.inverse(Q);
+        Matrix.Matrix3x3 K = Matrix.inverse(R);                         // K = R^-1
+        Matrix.Matrix3x3 A = Matrix.inverse(Q);                         // A = Q^-1
 
-        K = K.multiplyBy(1 / K.getV3().getZ());
+        K = K.multiplyBy(1 / K.getV3().getZ());                   // formatiramo K tako da je k33 = 1
 
         return new CameraParams(K, A, C);
     }
@@ -173,7 +182,7 @@ public class ControllerTask4 extends ButtonAction {
         }
 
         JamaMatrix SystemMatrix = new JamaMatrix(2 * originals.length, 12);
-        for(int i = 0; i < originals.length; i++) {
+        for(int i = 0; i < originals.length; i++) {         // pravimo matricu 2n x 12
             SystemMatrix.set(2*i, 0, 0);
             SystemMatrix.set(2*i, 1, 0);
             SystemMatrix.set(2*i, 2, 0);
@@ -205,11 +214,11 @@ public class ControllerTask4 extends ButtonAction {
             SystemMatrix.set(2*i + 1, 11, -projections[i].getX() * originals[i].getW());
         }
 
-        SVDecomposition svd = new SVDecomposition(SystemMatrix);
-        var Vt = svd.getV();
-        var V = Vt.transpose();
+        SVDecomposition svd = new SVDecomposition(SystemMatrix);    // SVDekompozicija nam daje A = UDVt
+        var Vt = svd.getV();                                        // izvlacimo Vt (transponovano V)
+        var V = Vt.transpose();                                     // (Vt)t = V
 
-        return V.getJamaMatrix(V.getRowDimension()-1, V.getRowDimension()-1, 0, 11);
+        return V.getJamaMatrix(V.getRowDimension()-1, V.getRowDimension()-1, 0, 11); // vracamo poslednju vrstu matrice V
     }
 
     private Vector4[] getSpaceCoordinatesFromTextFields() throws NumberFormatException{
@@ -287,6 +296,19 @@ public class ControllerTask4 extends ButtonAction {
     public void loadCoordsTest2() {
         String Ms = "460, 280, 250, 1; 50, 380, 350, 1; 470, 500, 100, 1; 380, 630, 300, 1; 180, 290, 0, 1; 580, 0, 130, 1";
         String MPs = "288, 251, 1; 79, 510, 1; 470, 440, 1; 520, 590, 1; 365, 388, 1; 365, 20, 1";
+
+        String[] splitMs = Ms.split(";");
+        String[] splitMPs = MPs.split(";");
+
+        for(int i = 0; i < textFieldsSpace.length; i++) {
+            textFieldsSpace[i].setText(splitMs[i].trim());
+            textFieldsProj[i].setText(splitMPs[i].trim());
+        }
+    }
+
+    public void loadCoordsTest3() {
+        String Ms = "160, 125, 38, 1; 286, 104, 0, 1; 306, 86, 94, 1; 165, 21, 47, 1; 5, 38, 183, 1; 43, 170, 42, 1";
+        String MPs = "1755, 1630, 1; 2697, 1933, 1; 2953, 1231, 1; 2013, 1233, 1; 1109, 326, 1; 824, 1594, 1";
 
         String[] splitMs = Ms.split(";");
         String[] splitMPs = MPs.split(";");

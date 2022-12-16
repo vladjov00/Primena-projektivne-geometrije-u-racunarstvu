@@ -96,9 +96,10 @@
       <Label layoutX="342.0" layoutY="604.0" text="M6p:" />
       <TextArea fx:id="taTResult" editable="false" focusTraversable="false" layoutX="695.0" layoutY="453.0" prefHeight="112.0" prefWidth="479.0" promptText="RESULT" />
       <Button fx:id="btFindT" layoutX="580.0" layoutY="535.0" mnemonicParsing="false" onAction="#calculateCameraMatrixButtonPressed" prefHeight="90.0" prefWidth="80.0" text="Find&#10;Camera&#10;Matrix&#10;" textAlignment="CENTER" />
-      <Label fx:id="lbInvalidInputCoords" focusTraversable="false" layoutX="574.0" layoutY="564.0" prefHeight="16.0" prefWidth="91.0" text="Invalid input!" textFill="RED" visible="false" />
+      <Label fx:id="lbInvalidInputCoords" focusTraversable="false" layoutX="575.0" layoutY="625.0" prefHeight="16.0" prefWidth="91.0" text="Invalid input!" textFill="RED" visible="false" />
       <Button fx:id="btSendToT" layoutX="888.0" layoutY="572.0" mnemonicParsing="false" onAction="#loadCameraMatrixToT" text="Input into T" />
-      <Button fx:id="btTestCoords1" layoutX="580.0" layoutY="379.0" mnemonicParsing="false" onAction="#loadCoordsTest1" prefHeight="50.0" prefWidth="80.0" text="Test 1&#10;n = 11" />
-      <Button fx:id="btTestCoords2" layoutX="580.0" layoutY="435.0" mnemonicParsing="false" onAction="#loadCoordsTest2" prefHeight="50.0" prefWidth="80.0" text="Test 2&#10;n = 96" />
+      <Button fx:id="btTestCoords1" layoutX="580.0" layoutY="374.0" mnemonicParsing="false" onAction="#loadCoordsTest1" prefHeight="50.0" prefWidth="80.0" text="Test 1&#10;n = 11" />
+      <Button fx:id="btTestCoords2" layoutX="580.0" layoutY="428.0" mnemonicParsing="false" onAction="#loadCoordsTest2" prefHeight="50.0" prefWidth="80.0" text="Test 2&#10;n = 96" />
+      <Button fx:id="btTestCoords3" layoutX="580.0" layoutY="482.0" mnemonicParsing="false" onAction="#loadCoordsTest3" prefHeight="24.0" prefWidth="80.0" text="Test3" />
    </children>
 </AnchorPane>
