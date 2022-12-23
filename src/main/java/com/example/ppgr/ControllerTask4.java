@@ -165,10 +165,8 @@ public class ControllerTask4 extends ButtonAction {
                 cameraTstrb.append("\n");
             }
             taTResult.setText(cameraTstrb.toString());
-
-        } catch (NumberFormatException e) {
-            lbInvalidInputCoords.setVisible(true);
         } catch (Exception e) {
+            lbInvalidInputCoords.setVisible(true);
             System.err.println(e.getMessage());
         }
     }

@@ -1,1 +1,13 @@
-Izometrije
+1. Euler2A(φ,θ,ψ) - vraća matricu A = Rz(ψ)∘Ry(θ)∘Rx(φ):
+
+2. AxisAngle(A) - vraća jedinični vektor p = (px; py; pz) i ugao φ ∈ [0, π] tako da A = Rp(φ):
+
+3. Rodriguez(p;φ) - vraća matricu rotacije oko orjentisanog (jediničnog) vektora p za ugao φ.
+
+4. A2Euler(A) - za datu ortogonalnu matricu A, det(A) = 1, vraća Ojlerove uglove ψ, θ i φ, redom.
+
+5. AxisAngle2Q(p;φ) - vraća jednični kvaternion q = (x; y; z;w) tako da Cq = Rp(φ).
+Vektor p je jednični.
+
+6. Q2AxisAngle(q) - vraća jedinični vektor p = (px; py; pz) i ugao φ ∈ [0, π]
+tako da kvaternion predstavlja rotaciju Rp(φ), tj. Cq = Rp(φ):
